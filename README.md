@@ -22,11 +22,13 @@ import { useBatteryStatus } from './battery';
 
 ## Usage
 
+> Hooks are a new addition in React 16.8. They let you use state and other React features without writing a class.
+
 The following are a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) for providing reusable stateful behavior in the form of environment-signals between different components.
 
 ### Network
 
-React hook for getting network status (effective connection type)
+`useNetworkStatus` React hook for getting network status (effective connection type)
 
 ```js
 import React from 'react';
@@ -61,7 +63,7 @@ const MyComponent = () => {
 
 ### Save Data
 
-React hook for getting Save Data whether it's Lite mode enabled or not
+`useSaveData` React hook for getting Save Data whether it's Lite mode enabled or not
 
 ```js
 import React from 'react';
@@ -80,7 +82,7 @@ const MyComponent = () => {
 
 ### CPU Cores / Hardware Concurrency
 
-React hook for getting the number of logical CPU processor cores of the user's device
+`useHardwareConcurrency` React hook for getting the number of logical CPU processor cores of the user's device
 
 ```js
 import React from 'react';
@@ -99,7 +101,7 @@ const MyComponent = () => {
 
 ### Memory
 
-React hook for getting memory status of the device
+`useMemoryStatus` React hook for getting memory status of the device
 
 ```js
 import React from 'react';
@@ -118,7 +120,7 @@ const MyComponent = () => {
 
 ### Battery
 
-React hook for getting battery status
+`useBatteryStatus` React hook for getting battery status
 
 ```js
 import React from 'react';
