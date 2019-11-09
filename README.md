@@ -198,3 +198,7 @@ const MyComponent = () => {
 ## License
 
 Licensed under the Apache-2.0 license.
+
+## Team
+
+This project is brought to you by [Addy Osmani](https://github.com/addyosmani) and [Anton Karlovskiy](https://github.com/anton-karlovskiy).
