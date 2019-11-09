@@ -39,19 +39,19 @@ const MyComponent = () => {
   let media;
   switch(effectiveConnectionType) {
     case 'slow-2g':
-      media = <img className='responsive' src='…' alt='low resolution' />;
+      media = <img src='...' alt='low resolution' />;
       break;
     case '2g':
-      media = <img className='responsive' src='…' alt='medium resolution' />;
+      media = <img src='...' alt='medium resolution' />;
       break;
     case '3g':
-      media = <img className='responsive' src='…' alt='high resolution' />;
+      media = <img src='...' alt='high resolution' />;
       break;
     case '4g':
-      media = <video className='responsive' src='…' controls />;
+      media = <video muted controls>...</video>;
       break;
     default:
-      media = <video className='responsive' src='…' controls />;
+      media = <video muted controls>...</video>;
       break;
   }
   
@@ -72,7 +72,7 @@ const MyComponent = () => {
   const { saveData } = useSaveData();
   return (
     <div>
-      { saveData ? <img src='...' /> : <video src='...' /> }
+      { saveData ? <img src='...' /> : <video muted controls>...</video> }
     </div>
   );
 };
@@ -91,7 +91,7 @@ const MyComponent = () => {
   const { numberOfLogicalProcessors } = useHardwareConcurrency();
   return (
     <div>
-      { numberOfLogicalProcessors <= 4 ? <img src='...' /> : <video src='...' /> }
+      { numberOfLogicalProcessors <= 4 ? <img src='...' /> : <video muted controls>...</video> }
     </div>
   );
 };
@@ -110,7 +110,7 @@ const MyComponent = () => {
   const { deviceMemory } = useMemoryStatus();
   return (
     <div>
-      { deviceMemory < 4 ? <img src='...' /> : <video src='...' /> }
+      { deviceMemory < 4 ? <img src='...' /> : <video muted controls>...</video> }
     </div>
   );
 };
@@ -129,7 +129,7 @@ const MyComponent = () => {
   const { level } = useBatteryStatus();
   return (
     <div>
-      { level > 0.75 ? <video src='...' /> : <img src='...' /> }
+      { level > 0.75 ? <video muted controls>...</video> : <img src='...' /> }
     </div>
   );
 };
