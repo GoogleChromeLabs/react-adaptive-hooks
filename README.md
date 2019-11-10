@@ -3,28 +3,36 @@
 
 > Give users a great experience best suited to their device and network constraints.
 
+This is a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) for adaptive loading based on a user's:
+
+* [Network - effective connection type](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/effectiveType)
+* [Data Saver preferences](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/saveData)
+* [Device memory](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory)
+* [Logical CPU cores](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency)
+
+It can be used to add patterns for adaptive resource loading, data-fetching, code-splitting and capability toggling.
+
 ## Objective
 
 Make it easier to target low-end devices while progressively adding high-end-only features on top. Using these hooks can help you give users a great experience best suited to their device and network constraints.
 
 ## Installation
 
-Now that the adaptive React hooks are [custom hooks](https://reactjs.org/docs/hooks-custom.html) we can just use them like normal React hooks after importing them.
+`npm i react-adaptive-hooks --save`
+
+## Usage
+
+You can import the hooks you wish to use as follows:
 
 ```js
 import { useNetworkStatus } from './network';
 import { useSaveData } from './save-data';
 import { useHardwareConcurrency } from './hardware-concurrency';
 import { useMemoryStatus } from './memory';
-import { useBatteryStatus } from './battery';
 
 ```
 
-## Usage
-
-> Hooks are a new addition in React 16.8. They let you use state and other React features without writing a class.
-
-The following are a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) for providing reusable stateful behavior in the form of environment-signals between different components.
+and then use them 
 
 ### Network
 
@@ -33,7 +41,7 @@ The following are a suite of [React Hooks](https://reactjs.org/docs/hooks-overvi
 ```js
 import React from 'react';
 
-import { useNetworkStatus } from './network';
+import { useNetworkStatus } from 'react-adaptive-hooks/network';
 
 const MyComponent = () => {
   const { effectiveConnectionType } = useNetworkStatus();
@@ -68,7 +76,7 @@ const MyComponent = () => {
 ```js
 import React from 'react';
 
-import { useSaveData } from './save-data';
+import { useSaveData } from 'react-adaptive-hooks/save-data';
 
 const MyComponent = () => {
   const { saveData } = useSaveData();
@@ -87,7 +95,7 @@ const MyComponent = () => {
 ```js
 import React from 'react';
 
-import { useHardwareConcurrency } from './hardware-concurrency';
+import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
 
 const MyComponent = () => {
   const { numberOfLogicalProcessors } = useHardwareConcurrency();
@@ -106,7 +114,7 @@ const MyComponent = () => {
 ```js
 import React from 'react';
 
-import { useMemoryStatus } from './memory';
+import { useMemoryStatus } from 'react-adaptive-hooks/memory';
 
 const MyComponent = () => {
   const { deviceMemory } = useMemoryStatus();
@@ -117,26 +125,6 @@ const MyComponent = () => {
   );
 };
 ```
-
-### Battery
-
-`useBatteryStatus` React hook for getting battery status
-
-```js
-import React from 'react';
-
-import { useBatteryStatus } from './battery';
-
-const MyComponent = () => {
-  const { level } = useBatteryStatus();
-  return (
-    <div>
-      { level > 0.75 ? <video muted controls>...</video> : <img src='...' /> }
-    </div>
-  );
-};
-```
-
 
 ## Browser Support
 
@@ -149,9 +137,6 @@ const MyComponent = () => {
 * [Performance memory API](https://developer.mozilla.org/en-US/docs/Web/API/Performance) is a non-standard and only available in [Chrome 7+, Opera, Chrome for Android 18+, Opera for Android](https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory)
 
 * [Device Memory API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory) is available in [Chrome 63+, Opera 50+, Chrome for Android 76+, Opera for Android 46+](https://caniuse.com/#search=deviceMemory)
-
-* [Battery Status API](https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API) is available in [Chrome 38+, Opera 25+, Edge 76+, Chrome for Android 76+, Firefox for Android 68+, Opera for Android 46+](https://caniuse.com/#search=battery)
-
 
 ## Demos
 
@@ -183,10 +168,6 @@ const MyComponent = () => {
 * [Memory-considerate animation-toggling](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/cna-memory-considerate-animation) with create-next-app ([Live](https://cna-memory-animation.firebaseapp.com/))
 
 * [React Dixie Mesh - memory considerate loading](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/react-dixie-memory-considerate-loading) ([Live](https://adaptive-loading.web.app/react-dixie-memory-considerate-loading/))
-
-### Battery
-
-* [Battery considerate loading](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/cra-battery-considerate-loading) with create-react-app ([Live](https://adaptive-loading.web.app/cra-battery-considerate-loading/))
 
 
 ## References
