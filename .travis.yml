@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - node
+branches:
+  only:
+    - master
+cache:
+  yarn: true
+  directories:
+    - node_module
+notifications:
+  email: false
+install: yarn 
+script: yarn test
