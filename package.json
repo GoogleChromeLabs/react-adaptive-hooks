@@ -1,6 +1,6 @@
 {
   "name": "react-adaptive-hooks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Give users a great experience best suited to their device and network constraints",
   "main": "index.js",
   "repository": "https://github.com/GoogleChromeLabs/react-adaptive-hooks",
