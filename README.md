@@ -1,5 +1,6 @@
+# React Adaptive Loading Hooks &middot; ![](https://img.shields.io/github/license/GoogleChromeLabs/react-adaptive-hooks.svg) [![Build Status](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks.svg?branch=master)](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-adaptive-hooks)
 
-# React Adaptive Loading Hooks
+
 
 > Give users a great experience best suited to their device and network constraints.
 
@@ -25,14 +26,14 @@ Make it easier to target low-end devices while progressively adding high-end-onl
 You can import the hooks you wish to use as follows:
 
 ```js
-import { useNetworkStatus } from './network';
-import { useSaveData } from './save-data';
-import { useHardwareConcurrency } from './hardware-concurrency';
-import { useMemoryStatus } from './memory';
+import { useNetworkStatus } from 'react-adaptive-hooks/network';
+import { useSaveData } from 'react-adaptive-hooks/save-data';
+import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
+import { useMemoryStatus } from 'react-adaptive-hooks/memory';
 
 ```
 
-and then use them 
+and then use them in your components. Examples for each hook can be found below.
 
 ### Network
 
