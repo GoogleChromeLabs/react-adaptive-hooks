@@ -184,20 +184,17 @@ We can extend `React.lazy()` by incorporating a check for a device or network si
 import React, { Suspense } from 'react';
 
 const Component = React.lazy(() => {
-  return new Promise(resolve => {
-    navigator.connection ? resolve(navigator.connection.effectiveType) : resolve(null)
-  }).then((effectiveType) => {
-    switch (effectiveType) {
-      case "3g":
-        return import(/* webpackChunkName: "light" */ "./light.js");
-        break;
-      case "4g":
-        return import(/* webpackChunkName: "full" */ "./full.js");
-        break;
-      default:
-        return import(/* webpackChunkName: "full" */ "./full.js")
-    }
-  });
+  const effectiveType = navigator.connection ? navigator.connection.effectiveType : null
+  switch (effectiveType) {
+    case "3g":
+      return import(/* webpackChunkName: "light" */ "./light.js");
+      break;
+    case "4g":
+      return import(/* webpackChunkName: "full" */ "./full.js");
+      break;
+    default:
+      return import(/* webpackChunkName: "full" */ "./full.js")
+  }
 });
 
 function App() {
