@@ -1,12 +1,10 @@
 # React Adaptive Loading Hooks &middot; ![](https://img.shields.io/github/license/GoogleChromeLabs/react-adaptive-hooks.svg) [![Build Status](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks.svg?branch=master)](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-adaptive-hooks)
 
-
-
-> Give users a great experience best suited to their device and network constraints.
+> Deliver experiences best suited to a user's device and network constraints (experimental)
 
 This is a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) for adaptive loading based on a user's:
 
-* [Network - effective connection type](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/effectiveType)
+* [Network via effective connection type](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/effectiveType)
 * [Data Saver preferences](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/saveData)
 * [Device memory](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory)
 * [Logical CPU cores](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency)
@@ -125,6 +123,46 @@ const MyComponent = () => {
     </div>
   );
 };
+```
+
+### Adaptive Code-splitting
+
+We can extend `React.lazy()` by incorporating a check for a device or network signal. Below is an example of network-aware code-splitting with the current network connection type value. This allows us to conditionally load a light core experience or full-fat experience depending on the user's effective connection speed (via `navigator.connection.effectiveType`).
+
+```js
+import React, { Suspense } from 'react';
+import './App.css';
+
+const Sample = React.lazy(() => {
+  return new Promise(resolve => {
+    navigator.connection ? resolve(navigator.connection.effectiveType) : resolve(null)
+  }).then((effectiveType) => {
+    switch (effectiveType) {
+      case "3g":
+        return import(/* webpackChunkName: "heavy" */ "./lite.js");
+        break;
+      case "4g":
+        return import(/* webpackChunkName: "light" */ "./full.js");
+        break;
+      default:
+        return import(/* webpackChunkName: "medium" */ "./full.js")
+    }
+  });
+});
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Sample />
+        </Suspense>
+      </header>
+    </div>
+  );
+}
+
+export default App;
 ```
 
 ## Browser Support
