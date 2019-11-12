@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-import { useState } from 'react';
-
+let initialHardwareConcurrency;
+if (typeof navigator !== 'undefined' && 'hardwareConcurrency' in navigator) {
+  initialHardwareConcurrency = { numberOfLogicalProcessors: navigator.hardwareConcurrency };
+} else {
+  initialHardwareConcurrency = { unsupported: true };
+}
 const useHardwareConcurrency = () => {
-  let initialHardwareConcurrency;
-  if ('hardwareConcurrency' in navigator) {
-    initialHardwareConcurrency = {numberOfLogicalProcessors: navigator.hardwareConcurrency};
-  } else {
-    initialHardwareConcurrency = {unsupported: true};
-  }
-
-  const [hardwareConcurrency] = useState(initialHardwareConcurrency);
-
-  return { ...hardwareConcurrency };
+  return { ...initialHardwareConcurrency };
 };
 
 export { useHardwareConcurrency };

@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-import { useState } from 'react';
-
 let unsupported;
+if ('connection' in navigator && 'saveData' in navigator.connection) {
+  unsupported = false;
+} else {
+  unsupported = true;
+}
+
+const saveData = unsupported ? null : navigator.connection.saveData === true;
 
 const useSaveData = () => {
-  if ('connection' in navigator && 'saveData' in navigator.connection) {
-    unsupported = false;
-  } else {
-    unsupported = true;
-  }
-
-  const initialSaveData = unsupported ? null : navigator.connection.saveData === true;
-  const [saveData] = useState(initialSaveData);
-
   return { unsupported, saveData };
 };
 
