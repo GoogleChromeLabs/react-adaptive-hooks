@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-let unsupported;
-if ('connection' in navigator && 'saveData' in navigator.connection) {
-  unsupported = false;
-} else {
-  unsupported = true;
-}
+const unsupported = !('connection' in navigator && 'saveData' in navigator.connection);
 
 const saveData = unsupported ? null : navigator.connection.saveData === true;
 
-const useSaveData = () => {
-  return { unsupported, saveData };
-};
-
-export { useSaveData };
+export const useSaveData = () => ({ unsupported, saveData });
