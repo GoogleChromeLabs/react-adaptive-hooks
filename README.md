@@ -140,14 +140,14 @@ const Full = lazy(() => import(/* webpackChunkName: "full" */ './Full.js'));
 const Light = lazy(() => import(/* webpackChunkName: "light" */ './Light.js'));
 
 function MyComponent() {
-const { effectiveConnectionType } = useNetworkStatus();
-return (
-  <div>
-    <Suspense fallback={<div>Loading...</div>}>
-      { effectiveConnectionType === '4g' ? <Full /> : <Light /> }
-    </Suspense>
-  </div>
-);
+  const { effectiveConnectionType } = useNetworkStatus();
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        { effectiveConnectionType === '4g' ? <Full /> : <Light /> }
+      </Suspense>
+    </div>
+  );
 }
 
 export default MyComponent;
