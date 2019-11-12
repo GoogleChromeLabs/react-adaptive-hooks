@@ -125,7 +125,58 @@ const MyComponent = () => {
 };
 ```
 
-### Adaptive Code-splitting
+### Adaptive Code-loading & Code-splitting
+
+#### Code-loading
+
+Deliver a light, interactive core experience to users and progressively add high-end-only features on top, if a users hardware can handle it. Below is an example using the Network Status hook:
+
+```js
+import React, { Suspense, lazy } from 'react';
+
+import { useNetworkStatus } from 'react-adaptive-hooks/network';
+
+const Full = lazy(() => import(/* webpackChunkName: "full" */ './Full.js'));
+const Light = lazy(() => import(/* webpackChunkName: "light" */ './Light.js'));
+
+function MyComponent() {
+const { effectiveConnectionType } = useNetworkStatus();
+return (
+  <div>
+    <Suspense fallback={<div>Loading...</div>}>
+      { effectiveConnectionType === '4g' ? <Full /> : <Light /> }
+    </Suspense>
+  </div>
+);
+}
+
+export default MyComponent;
+```
+
+Light.js:
+```js
+import React from 'react';
+
+const Light = ({ imageUrl, ...rest }) => (
+  <img src={imageUrl} alt='product' {...rest} />
+);
+
+export default Light;
+```
+
+Full.js:
+```js
+import React from 'react';
+import Magnifier from 'react-magnifier';
+
+const Heavy = ({ imageUrl, ...rest }) => (
+  <Magnifier src={imageUrl} {...rest} />
+);
+
+export default Full;
+```
+
+#### Code-splitting
 
 We can extend `React.lazy()` by incorporating a check for a device or network signal. Below is an example of network-aware code-splitting with the current network connection type value. This allows us to conditionally load a light core experience or full-fat experience depending on the user's effective connection speed (via `navigator.connection.effectiveType`).
 
