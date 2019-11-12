@@ -1,8 +1,8 @@
-# React Adaptive Loading Hooks &middot; ![](https://img.shields.io/github/license/GoogleChromeLabs/react-adaptive-hooks.svg) [![Build Status](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks.svg?branch=master)](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-adaptive-hooks)
+# React Adaptive Loading Hooks &amp; Utilities &middot; ![](https://img.shields.io/github/license/GoogleChromeLabs/react-adaptive-hooks.svg) [![Build Status](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks.svg?branch=master)](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-adaptive-hooks)
 
 > Deliver experiences best suited to a user's device and network constraints (experimental)
 
-This is a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) for adaptive loading based on a user's:
+This is a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) and utilities for adaptive loading based on a user's:
 
 * [Network via effective connection type](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/effectiveType)
 * [Data Saver preferences](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/saveData)
@@ -13,7 +13,7 @@ It can be used to add patterns for adaptive resource loading, data-fetching, cod
 
 ## Objective
 
-Make it easier to target low-end devices while progressively adding high-end-only features on top. Using these hooks can help you give users a great experience best suited to their device and network constraints.
+Make it easier to target low-end devices while progressively adding high-end-only features on top. Using these hooks and utilities can help you give users a great experience best suited to their device and network constraints.
 
 ## Installation
 
@@ -31,7 +31,7 @@ import { useMemoryStatus } from 'react-adaptive-hooks/memory';
 
 ```
 
-and then use them in your components. Examples for each hook can be found below.
+and then use them in your components. Examples for each hook and utility can be found below:
 
 ### Network
 
@@ -70,7 +70,7 @@ const MyComponent = () => {
 
 ### Save Data
 
-`useSaveData` React hook for getting Save Data whether it's Lite mode enabled or not
+`useSaveData` Utility for getting Save Data whether it's Lite mode enabled or not
 
 ```js
 import React from 'react';
@@ -89,7 +89,7 @@ const MyComponent = () => {
 
 ### CPU Cores / Hardware Concurrency
 
-`useHardwareConcurrency` React hook for getting the number of logical CPU processor cores of the user's device
+`useHardwareConcurrency` Utility for getting the number of logical CPU processor cores of the user's device
 
 ```js
 import React from 'react';
@@ -108,7 +108,7 @@ const MyComponent = () => {
 
 ### Memory
 
-`useMemoryStatus` React hook for getting memory status of the device
+`useMemoryStatus` Utility for getting memory status of the device
 
 ```js
 import React from 'react';
