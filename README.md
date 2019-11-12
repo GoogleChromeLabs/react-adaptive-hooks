@@ -178,25 +178,24 @@ export default Full;
 
 #### Code-splitting
 
-We can extend `React.lazy()` by incorporating a check for a device or network signal. Below is an example of network-aware code-splitting with the current network connection type value. This allows us to conditionally load a light core experience or full-fat experience depending on the user's effective connection speed (via `navigator.connection.effectiveType`).
+We can extend `React.lazy()` by incorporating a check for a device or network signal. Below is an example of network-aware code-splitting. This allows us to conditionally load a light core experience or full-fat experience depending on the user's effective connection speed (via `navigator.connection.effectiveType`).
 
 ```js
 import React, { Suspense } from 'react';
-import './App.css';
 
-const Sample = React.lazy(() => {
+const Component = React.lazy(() => {
   return new Promise(resolve => {
     navigator.connection ? resolve(navigator.connection.effectiveType) : resolve(null)
   }).then((effectiveType) => {
     switch (effectiveType) {
       case "3g":
-        return import(/* webpackChunkName: "heavy" */ "./lite.js");
+        return import(/* webpackChunkName: "light" */ "./light.js");
         break;
       case "4g":
-        return import(/* webpackChunkName: "light" */ "./full.js");
+        return import(/* webpackChunkName: "full" */ "./full.js");
         break;
       default:
-        return import(/* webpackChunkName: "medium" */ "./full.js")
+        return import(/* webpackChunkName: "full" */ "./full.js")
     }
   });
 });
@@ -206,7 +205,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Suspense fallback={<div>Loading...</div>}>
-          <Sample />
+          <Component />
         </Suspense>
       </header>
     </div>
