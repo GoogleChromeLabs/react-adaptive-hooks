@@ -16,10 +16,14 @@
 
 import { renderHook } from '@testing-library/react-hooks';
 
-import { useHardwareConcurrency } from './';
+afterEach(function() {
+  // Reload hook for every test
+  jest.resetModules();
+});
 
 describe('useHardwareConcurrency', () => {
   test(`should return window.navigator.hardwareConcurrency`, () => {
+    const { useHardwareConcurrency } = require('./');
     const { result } = renderHook(() => useHardwareConcurrency());
     expect(result.current.numberOfLogicalProcessors).toBe(window.navigator.hardwareConcurrency);
   });
@@ -30,6 +34,7 @@ describe('useHardwareConcurrency', () => {
       configurable: true,
       writable: true
     });
+    const { useHardwareConcurrency } = require('./');
     const { result } = renderHook(() => useHardwareConcurrency());
 
     expect(result.current.numberOfLogicalProcessors).toEqual(4);
@@ -41,6 +46,7 @@ describe('useHardwareConcurrency', () => {
       configurable: true,
       writable: true
     });
+    const { useHardwareConcurrency } = require('./');
     const { result } = renderHook(() => useHardwareConcurrency());
 
     expect(result.current.numberOfLogicalProcessors).toEqual(2);

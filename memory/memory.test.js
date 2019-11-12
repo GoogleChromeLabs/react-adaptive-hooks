@@ -16,7 +16,10 @@
 
 import { renderHook } from '@testing-library/react-hooks';
 
-import { useMemoryStatus } from './';
+afterEach(function() {
+  // Reload hook for every test
+  jest.resetModules();
+});
 
 const getMemoryStatus = currentResult => ({
   deviceMemory: currentResult.deviceMemory,
@@ -27,6 +30,7 @@ const getMemoryStatus = currentResult => ({
 
 describe('useMemoryStatus', () => {
   test(`should return "true" for unsupported case`, () => {
+    const { useMemoryStatus } = require('./');
     const { result } = renderHook(() => useMemoryStatus());
 
     expect(result.current.unsupported).toBe(true);
@@ -48,6 +52,7 @@ describe('useMemoryStatus', () => {
       jsHeapSizeLimit: mockMemoryStatus.jsHeapSizeLimit
     };
 
+    const { useMemoryStatus } = require('./');
     const { result } = renderHook(() => useMemoryStatus());
 
     expect(getMemoryStatus(result.current)).toEqual(mockMemoryStatus);

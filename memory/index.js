@@ -14,33 +14,27 @@
  * limitations under the License.
  */
 
-import { useState } from 'react';
-
 let unsupported;
+if (typeof navigator !== 'undefined' && 'deviceMemory' in navigator) {
+  unsupported = false;
+} else {
+  unsupported = true;
+}
+let initialMemoryStatus;
+if (!unsupported) {
+  const performanceMemory = 'memory' in performance ? performance.memory : null;
+  initialMemoryStatus = {
+    deviceMemory: navigator.deviceMemory,
+    totalJSHeapSize: performanceMemory ? performanceMemory.totalJSHeapSize : null,
+    usedJSHeapSize: performanceMemory ? performanceMemory.usedJSHeapSize : null,
+    jsHeapSizeLimit: performanceMemory ? performanceMemory.jsHeapSizeLimit : null
+  };
+} else {
+  initialMemoryStatus = { unsupported };
+}
 
 const useMemoryStatus = () => {
-  if ('deviceMemory' in navigator) {
-    unsupported = false;
-  } else {
-    unsupported = true;
-  }
-
-  let initialMemoryStatus;
-  if (!unsupported) {
-    const performanceMemory = ('memory' in performance) ? performance.memory : null;
-    initialMemoryStatus = {
-      deviceMemory: navigator.deviceMemory,
-      totalJSHeapSize: performanceMemory ? performanceMemory.totalJSHeapSize : null,
-      usedJSHeapSize: performanceMemory ? performanceMemory.usedJSHeapSize : null,
-      jsHeapSizeLimit: performanceMemory ? performanceMemory.jsHeapSizeLimit : null
-    };
-  } else {
-    initialMemoryStatus = {unsupported};
-  }
-
-  const [memoryStatus] = useState(initialMemoryStatus);
-
-  return { ...memoryStatus };
+  return { ...initialMemoryStatus };
 };
 
 export { useMemoryStatus };

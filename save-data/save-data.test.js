@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2019 Google LLC
  *
@@ -16,10 +15,15 @@
  */
 
 import { renderHook, act } from '@testing-library/react-hooks';
-import { useSaveData } from './';
+
+afterEach(function() {
+  // Reload hook for every test
+  jest.resetModules();
+});
 
 describe('useSaveData', () => {
   test(`should return "true" for unsupported case`, () => {
+    const { useSaveData } = require('./');
     const { result } = renderHook(() => useSaveData());
     expect(result.current.unsupported).toBe(true);
   });
@@ -28,6 +32,7 @@ describe('useSaveData', () => {
     global.navigator.connection = {
       saveData: true
     };
+    const { useSaveData } = require('./');
     const { result } = renderHook(() => useSaveData());
 
     expect(result.current.saveData).toEqual(navigator.connection.saveData);
@@ -37,6 +42,7 @@ describe('useSaveData', () => {
     global.navigator.connection = {
       saveData: false
     };
+    const { useSaveData } = require('./');
     const { result } = renderHook(() => useSaveData());
 
     expect(result.current.saveData).toEqual(navigator.connection.saveData);
