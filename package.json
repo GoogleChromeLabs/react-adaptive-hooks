@@ -30,5 +30,8 @@
     "hooks",
     "react",
     "performance"
-  ]
+  ],
+  "dependencies": {
+    "use-constant": "^1.0.0"
+  }
 }
