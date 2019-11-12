@@ -1,12 +1,10 @@
 # React Adaptive Loading Hooks &middot; ![](https://img.shields.io/github/license/GoogleChromeLabs/react-adaptive-hooks.svg) [![Build Status](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks.svg?branch=master)](https://travis-ci.org/GoogleChromeLabs/react-adaptive-hooks) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-adaptive-hooks)
 
-
-
-> Give users a great experience best suited to their device and network constraints.
+> Deliver experiences best suited to a user's device and network constraints (experimental)
 
 This is a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) for adaptive loading based on a user's:
 
-* [Network - effective connection type](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/effectiveType)
+* [Network via effective connection type](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/effectiveType)
 * [Data Saver preferences](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/saveData)
 * [Device memory](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory)
 * [Logical CPU cores](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency)
@@ -125,6 +123,96 @@ const MyComponent = () => {
     </div>
   );
 };
+```
+
+### Adaptive Code-loading & Code-splitting
+
+#### Code-loading
+
+Deliver a light, interactive core experience to users and progressively add high-end-only features on top, if a users hardware can handle it. Below is an example using the Network Status hook:
+
+```js
+import React, { Suspense, lazy } from 'react';
+
+import { useNetworkStatus } from 'react-adaptive-hooks/network';
+
+const Full = lazy(() => import(/* webpackChunkName: "full" */ './Full.js'));
+const Light = lazy(() => import(/* webpackChunkName: "light" */ './Light.js'));
+
+function MyComponent() {
+const { effectiveConnectionType } = useNetworkStatus();
+return (
+  <div>
+    <Suspense fallback={<div>Loading...</div>}>
+      { effectiveConnectionType === '4g' ? <Full /> : <Light /> }
+    </Suspense>
+  </div>
+);
+}
+
+export default MyComponent;
+```
+
+Light.js:
+```js
+import React from 'react';
+
+const Light = ({ imageUrl, ...rest }) => (
+  <img src={imageUrl} alt='product' {...rest} />
+);
+
+export default Light;
+```
+
+Full.js:
+```js
+import React from 'react';
+import Magnifier from 'react-magnifier';
+
+const Heavy = ({ imageUrl, ...rest }) => (
+  <Magnifier src={imageUrl} {...rest} />
+);
+
+export default Full;
+```
+
+#### Code-splitting
+
+We can extend `React.lazy()` by incorporating a check for a device or network signal. Below is an example of network-aware code-splitting. This allows us to conditionally load a light core experience or full-fat experience depending on the user's effective connection speed (via `navigator.connection.effectiveType`).
+
+```js
+import React, { Suspense } from 'react';
+
+const Component = React.lazy(() => {
+  return new Promise(resolve => {
+    navigator.connection ? resolve(navigator.connection.effectiveType) : resolve(null)
+  }).then((effectiveType) => {
+    switch (effectiveType) {
+      case "3g":
+        return import(/* webpackChunkName: "light" */ "./light.js");
+        break;
+      case "4g":
+        return import(/* webpackChunkName: "full" */ "./full.js");
+        break;
+      default:
+        return import(/* webpackChunkName: "full" */ "./full.js")
+    }
+  });
+});
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Component />
+        </Suspense>
+      </header>
+    </div>
+  );
+}
+
+export default App;
 ```
 
 ## Browser Support
