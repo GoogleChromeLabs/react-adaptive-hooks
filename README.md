@@ -17,7 +17,7 @@ Make it easier to target low-end devices while progressively adding high-end-onl
 
 ## Installation
 
-`npm i react-adaptive-hooks --save`
+`npm i react-adaptive-hooks --save` or `yarn add react-adaptive-hooks`
 
 ## Usage
 
@@ -169,7 +169,7 @@ Full.js:
 import React from 'react';
 import Magnifier from 'react-magnifier';
 
-const Heavy = ({ imageUrl, ...rest }) => (
+const Full = ({ imageUrl, ...rest }) => (
   <Magnifier src={imageUrl} {...rest} />
 );
 
@@ -188,10 +188,8 @@ const Component = React.lazy(() => {
   switch (effectiveType) {
     case "3g":
       return import(/* webpackChunkName: "light" */ "./light.js");
-      break;
     case "4g":
       return import(/* webpackChunkName: "full" */ "./full.js");
-      break;
     default:
       return import(/* webpackChunkName: "full" */ "./full.js")
   }
