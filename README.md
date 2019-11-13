@@ -188,8 +188,10 @@ const Component = React.lazy(() => {
   switch (effectiveType) {
     case "3g":
       return import(/* webpackChunkName: "light" */ "./light.js");
+      break;
     case "4g":
       return import(/* webpackChunkName: "full" */ "./full.js");
+      break;
     default:
       return import(/* webpackChunkName: "full" */ "./full.js")
   }
