@@ -17,7 +17,7 @@ Make it easier to target low-end devices while progressively adding high-end-onl
 
 ## Installation
 
-`npm i react-adaptive-hooks --save`
+`npm i react-adaptive-hooks --save` or `yarn add react-adaptive-hooks`
 
 ## Usage
 
@@ -169,7 +169,7 @@ Full.js:
 import React from 'react';
 import Magnifier from 'react-magnifier';
 
-const Heavy = ({ imageUrl, ...rest }) => (
+const Full = ({ imageUrl, ...rest }) => (
   <Magnifier src={imageUrl} {...rest} />
 );
 
