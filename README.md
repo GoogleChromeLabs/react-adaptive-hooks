@@ -129,7 +129,7 @@ const MyComponent = () => {
 
 #### Code-loading
 
-Deliver a light, interactive core experience to users and progressively add high-end-only features on top, if a users hardware can handle it. Below is an example using the Network Status hook:
+Deliver a light, interactive core experience to users and progressively add high-end-only features on top, if a user's hardware can handle it. Below is an example using the Network Status hook:
 
 ```js
 import React, { Suspense, lazy } from 'react';
@@ -169,7 +169,7 @@ Full.js:
 import React from 'react';
 import Magnifier from 'react-magnifier';
 
-const Heavy = ({ imageUrl, ...rest }) => (
+const Full = ({ imageUrl, ...rest }) => (
   <Magnifier src={imageUrl} {...rest} />
 );
 
@@ -185,16 +185,21 @@ import React, { Suspense } from 'react';
 
 const Component = React.lazy(() => {
   const effectiveType = navigator.connection ? navigator.connection.effectiveType : null
+
+  let module;
   switch (effectiveType) {
     case "3g":
-      return import(/* webpackChunkName: "light" */ "./light.js");
+      module = import(/* webpackChunkName: "light" */ "./Light.js");
       break;
     case "4g":
-      return import(/* webpackChunkName: "full" */ "./full.js");
+      module = import(/* webpackChunkName: "full" */ "./Full.js");
       break;
     default:
-      return import(/* webpackChunkName: "full" */ "./full.js")
+      module = import(/* webpackChunkName: "full" */ "./Full.js");
+      break;
   }
+
+  return module;
 });
 
 function App() {
