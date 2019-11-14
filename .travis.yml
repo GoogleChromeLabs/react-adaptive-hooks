@@ -5,10 +5,11 @@ branches:
   only:
     - master
 cache:
-  yarn: true
+  npm: true
   directories:
-    - node_module
+    - node_modules
 notifications:
   email: false
-install: yarn 
-script: yarn test
+install:
+  - npm ci
+script: npm run test
