@@ -16,7 +16,10 @@
 
 let initialHardwareConcurrency;
 if (typeof navigator !== 'undefined' && 'hardwareConcurrency' in navigator) {
-  initialHardwareConcurrency = { numberOfLogicalProcessors: navigator.hardwareConcurrency };
+  initialHardwareConcurrency = {
+    unsupported: false,
+    numberOfLogicalProcessors: navigator.hardwareConcurrency
+  };
 } else {
   initialHardwareConcurrency = { unsupported: true };
 }
