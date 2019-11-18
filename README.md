@@ -28,7 +28,6 @@ import { useNetworkStatus } from 'react-adaptive-hooks/network';
 import { useSaveData } from 'react-adaptive-hooks/save-data';
 import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
 import { useMemoryStatus } from 'react-adaptive-hooks/memory';
-
 ```
 
 and then use them in your components. Examples for each hook and utility can be found below:
@@ -163,7 +162,7 @@ import { useNetworkStatus } from 'react-adaptive-hooks/network';
 const Full = lazy(() => import(/* webpackChunkName: "full" */ './Full.js'));
 const Light = lazy(() => import(/* webpackChunkName: "light" */ './Light.js'));
 
-function MyComponent() {
+const MyComponent = () => {
   const { effectiveConnectionType } = useNetworkStatus();
   return (
     <div>
@@ -172,7 +171,7 @@ function MyComponent() {
       </Suspense>
     </div>
   );
-}
+};
 
 export default MyComponent;
 ```
@@ -182,7 +181,7 @@ Light.js:
 import React from 'react';
 
 const Light = ({ imageUrl, ...rest }) => (
-  <img src={imageUrl} alt='product' {...rest} />
+  <img src={imageUrl} {...rest} />
 );
 
 export default Light;
@@ -212,31 +211,31 @@ const Component = React.lazy(() => {
 
   let module;
   switch (effectiveType) {
-    case "3g":
-      module = import(/* webpackChunkName: "light" */ "./Light.js");
+    case 'slow-2g':
+    case '2g':
+    case '3g':
+      module = import(/* webpackChunkName: "light" */ './Light.js');
       break;
-    case "4g":
-      module = import(/* webpackChunkName: "full" */ "./Full.js");
+    case '4g':
+      module = import(/* webpackChunkName: "full" */ './Full.js');
       break;
     default:
-      module = import(/* webpackChunkName: "full" */ "./Full.js");
+      module = import(/* webpackChunkName: "full" */ './Full.js');
       break;
   }
 
   return module;
 });
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Suspense fallback={<div>Loading...</div>}>
-          <Component />
-        </Suspense>
-      </header>
+    <div className='App'>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Component />
+      </Suspense>
     </div>
   );
-}
+};
 
 export default App;
 ```
