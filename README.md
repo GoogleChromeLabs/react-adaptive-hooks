@@ -35,7 +35,7 @@ and then use them in your components. Examples for each hook and utility can be 
 
 ### Network
 
-`useNetworkStatus` React hook for getting network status (effective connection type)
+`useNetworkStatus` React hook for adapting based on network status (effective connection type)
 
 ```js
 import React from 'react';
@@ -70,7 +70,7 @@ const MyComponent = () => {
 
 ### Save Data
 
-`useSaveData` Utility for getting Save Data whether it's Lite mode enabled or not
+`useSaveData` utility for adapting based on the user's browser Data Saver preferences.
 
 ```js
 import React from 'react';
@@ -89,7 +89,7 @@ const MyComponent = () => {
 
 ### CPU Cores / Hardware Concurrency
 
-`useHardwareConcurrency` Utility for getting the number of logical CPU processor cores of the user's device
+`useHardwareConcurrency` utility for adapting to the number of logical CPU processor cores on the user's device.
 
 ```js
 import React from 'react';
@@ -108,7 +108,7 @@ const MyComponent = () => {
 
 ### Memory
 
-`useMemoryStatus` Utility for getting memory status of the device
+`useMemoryStatus` utility for adapting based on the user's device memory (RAM)
 
 ```js
 import React from 'react';
