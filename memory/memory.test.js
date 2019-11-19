@@ -16,9 +16,13 @@
 
 import { renderHook } from '@testing-library/react-hooks';
 
+const tmp = Object.assign({}, global.navigator);
+
 afterEach(function() {
   // Reload hook for every test
   jest.resetModules();
+  // reset global.navigator mock to it's initial value after each test
+  global.navigator = Object.assign({}, tmp);
 });
 
 const getMemoryStatus = currentResult => ({
@@ -56,5 +60,32 @@ describe('useMemoryStatus', () => {
     const { result } = renderHook(() => useMemoryStatus());
 
     expect(getMemoryStatus(result.current)).toEqual(mockMemoryStatus);
+  });
+
+  test('should return `{unsupported: true}` if `navigator` is undefined', () => {
+    delete global.navigator;
+
+    const { useMemoryStatus } = require('./');
+    const { result } = renderHook(() => useMemoryStatus());
+
+    expect(result.current.unsupported).toEqual(true);
+  });
+
+  test('should return `{unsupported: true}` if `navigator.deviceMemory` is not available', () => {
+    delete global.navigator.deviceMemory;
+
+    const { useMemoryStatus } = require('./');
+    const { result } = renderHook(() => useMemoryStatus());
+
+    expect(result.current.unsupported).toEqual(true);
+  });
+
+  test('should return `{unsupported: true}` if `navigator.deviceMemory` is not available', () => {
+    delete global.navigator.deviceMemory;
+
+    const { useMemoryStatus } = require('./');
+    const { result } = renderHook(() => useMemoryStatus());
+
+    expect(result.current.unsupported).toEqual(true);
   });
 });

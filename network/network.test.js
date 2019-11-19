@@ -15,8 +15,14 @@
  */
 
 import { renderHook, act } from '@testing-library/react-hooks';
-
 import { useNetworkStatus } from './';
+
+const tmp = Object.assign({}, global.navigator);
+
+afterEach(function() {
+  // reset global.navigator mock to it's initial value after each test
+  global.navigator = Object.assign({}, tmp);
+});
 
 describe('useNetworkStatus', () => {
   test('should return 4g of effectiveConnectionType', () => {
@@ -27,15 +33,17 @@ describe('useNetworkStatus', () => {
     };
 
     const { result } = renderHook(() => useNetworkStatus());
-    
+
     expect(result.current.effectiveConnectionType).toEqual('4g');
   });
 
   test('should update the effectiveConnectionType state', () => {
     const { result } = renderHook(() => useNetworkStatus());
 
-    act(() => result.current.setNetworkStatus({effectiveConnectionType: '2g'}));
-  
+    act(() =>
+      result.current.setNetworkStatus({ effectiveConnectionType: '2g' })
+    );
+
     expect(result.current.effectiveConnectionType).toEqual('2g');
   });
 
@@ -54,5 +62,23 @@ describe('useNetworkStatus', () => {
     act(() => map.change());
 
     expect(result.current.effectiveConnectionType).toEqual('4g');
+  });
+
+  test('should return `{unsupported: true}` if `navigator` is undefined', () => {
+    delete global.navigator;
+    const { result } = renderHook(() => useNetworkStatus());
+    expect(result.current.unsupported).toEqual(true);
+  });
+
+  test('should return `{unsupported: true}` if `navigator.connection` is not available', () => {
+    delete global.navigator.connection;
+    const { result } = renderHook(() => useNetworkStatus());
+    expect(result.current.unsupported).toEqual(true);
+  });
+
+  test('should return `{unsupported: true}` if `navigator.connection.effectiveConnectionType` is not available', () => {
+    global.navigator.connection = {};
+    const { result } = renderHook(() => useNetworkStatus());
+    expect(result.current.unsupported).toEqual(true);
   });
 });

@@ -25,9 +25,13 @@ if (!unsupported) {
   const performanceMemory = 'memory' in performance ? performance.memory : null;
   initialMemoryStatus = {
     deviceMemory: navigator.deviceMemory,
-    totalJSHeapSize: performanceMemory ? performanceMemory.totalJSHeapSize : null,
+    totalJSHeapSize: performanceMemory
+      ? performanceMemory.totalJSHeapSize
+      : null,
     usedJSHeapSize: performanceMemory ? performanceMemory.usedJSHeapSize : null,
-    jsHeapSizeLimit: performanceMemory ? performanceMemory.jsHeapSizeLimit : null
+    jsHeapSizeLimit: performanceMemory
+      ? performanceMemory.jsHeapSizeLimit
+      : null
   };
 } else {
   initialMemoryStatus = { unsupported };

@@ -25,6 +25,9 @@
     "jest": "^24.8.0",
     "react-test-renderer": "16.9.0"
   },
+  "prettier": {
+    "singleQuote": true
+  },
   "keywords": [
     "react-hooks",
     "hooks",

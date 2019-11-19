@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
+
+const tmp = Object.assign({}, global.navigator);
 
 afterEach(function() {
   // Reload hook for every test
   jest.resetModules();
+  // reset global.navigator mock to it's initial value after each test
+  global.navigator = Object.assign({}, tmp);
 });
 
 describe('useSaveData', () => {
@@ -46,5 +50,26 @@ describe('useSaveData', () => {
     const { result } = renderHook(() => useSaveData());
 
     expect(result.current.saveData).toEqual(navigator.connection.saveData);
+  });
+
+  test('should return `{unsupported: true}` if navigator is unavailable', () => {
+    delete global.navigator;
+    const { useSaveData } = require('./');
+    const { result } = renderHook(() => useSaveData());
+    expect(result.current.unsupported).toBe(true);
+  });
+
+  test('should return `{unsupported: true}` if navigator.connection is unavailable', () => {
+    delete global.navigator.connection;
+    const { useSaveData } = require('./');
+    const { result } = renderHook(() => useSaveData());
+    expect(result.current.unsupported).toBe(true);
+  });
+
+  test('should return `{unsupported: true}` if navigator.connection.saveData is unavailable', () => {
+    global.navigator.connection = {};
+    const { useSaveData } = require('./');
+    const { result } = renderHook(() => useSaveData());
+    expect(result.current.unsupported).toBe(true);
   });
 });

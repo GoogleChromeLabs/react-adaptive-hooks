@@ -16,16 +16,22 @@
 
 import { renderHook } from '@testing-library/react-hooks';
 
+const tmp = Object.assign({}, global.navigator);
+
 afterEach(function() {
   // Reload hook for every test
   jest.resetModules();
+  // reset global.navigator mock to it's initial value after each test
+  global.navigator = Object.assign({}, tmp);
 });
 
 describe('useHardwareConcurrency', () => {
   test(`should return window.navigator.hardwareConcurrency`, () => {
     const { useHardwareConcurrency } = require('./');
     const { result } = renderHook(() => useHardwareConcurrency());
-    expect(result.current.numberOfLogicalProcessors).toBe(window.navigator.hardwareConcurrency);
+    expect(result.current.numberOfLogicalProcessors).toBe(
+      window.navigator.hardwareConcurrency
+    );
   });
 
   test('should return 4 for device of hardwareConcurrency = 4', () => {
@@ -50,5 +56,23 @@ describe('useHardwareConcurrency', () => {
     const { result } = renderHook(() => useHardwareConcurrency());
 
     expect(result.current.numberOfLogicalProcessors).toEqual(2);
+  });
+
+  test('should return `{unsupported: true}` if `navigator` is undefined', () => {
+    delete global.navigator;
+
+    const { useHardwareConcurrency } = require('./');
+    const { result } = renderHook(() => useHardwareConcurrency());
+
+    expect(result.current.unsupported).toEqual(true);
+  });
+
+  test('should return `{unsupported: true}` if `navigator.hardwareConcurrency` is not available', () => {
+    delete global.navigator.hardwareConcurrency;
+
+    const { useHardwareConcurrency } = require('./');
+    const { result } = renderHook(() => useHardwareConcurrency());
+
+    expect(result.current.unsupported).toEqual(true);
   });
 });
