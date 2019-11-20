@@ -16,26 +16,26 @@
 
 import { useState, useEffect } from 'react';
 
-const useMediaCapabilities = ({ mediaConfig } = {}) => {
-    const [mediaCapabilities, setMediaCapabilities] = useState(null);
+const useMediaCapabilities = (mediaConfig) => {
+    let initialMediaCapabilities = null
+
+    if (!('mediaCapabilities' in navigator)) {
+        initialMediaCapabilities = {
+            unsupported: true
+        }
+    }
+
+    if (!mediaConfig) {
+        initialMediaCapabilities = {
+            ...initialMediaCapabilities,
+            missingMediaConfig: true
+        }
+    }
+
+    const [mediaCapabilities, setMediaCapabilities] = useState(initialMediaCapabilities);
 
     useEffect(() => {
-        let validation = null
-
-        if (!('mediaCapabilities' in navigator)) {
-            validation = {
-                unsupported: true
-            }
-        }
-
-        if (!mediaConfig) {
-            validation = {
-                ...validation,
-                missingMediaConfig: true
-            }
-        }
-
-        setMediaCapabilities(validation || navigator.mediaCapabilities.decodingInfo(mediaConfig));
+        !initialMediaCapabilities && setMediaCapabilities(navigator.mediaCapabilities.decodingInfo(mediaConfig));
     }, []);
 
     return { mediaCapabilities };

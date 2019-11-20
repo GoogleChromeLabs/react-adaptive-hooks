@@ -8,6 +8,7 @@ This is a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) a
 * [Data Saver preferences](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/saveData)
 * [Device memory](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory)
 * [Logical CPU cores](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency)
+* [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API)
 
 It can be used to add patterns for adaptive resource loading, data-fetching, code-splitting and capability toggling.
 
@@ -28,6 +29,7 @@ import { useNetworkStatus } from 'react-adaptive-hooks/network';
 import { useSaveData } from 'react-adaptive-hooks/save-data';
 import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
 import { useMemoryStatus } from 'react-adaptive-hooks/memory';
+import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
 
 ```
 
@@ -120,6 +122,26 @@ const MyComponent = () => {
   return (
     <div>
       { deviceMemory < 4 ? <img src='...' /> : <video muted controls>...</video> }
+    </div>
+  );
+};
+```
+
+### Media Capabilities
+
+`useMediaCapabilities` utility for adapting based on the user's device media capabilities
+
+```js
+import React from 'react';
+
+import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
+
+const MyComponent = ({ mediaConfig }) => {
+  const { mediaCapabilities } = useMediaCapabilities(mediaConfig);
+
+  return (
+    <div>
+      { mediaCapabilities.supported ? <video muted controls>...</video> : <img src='...' /> }
     </div>
   );
 };
@@ -228,6 +250,8 @@ export default App;
 * [Performance memory API](https://developer.mozilla.org/en-US/docs/Web/API/Performance) is a non-standard and only available in [Chrome 7+, Opera, Chrome for Android 18+, Opera for Android](https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory)
 
 * [Device Memory API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory) is available in [Chrome 63+, Opera 50+, Chrome for Android 76+, Opera for Android 46+](https://caniuse.com/#search=deviceMemory)
+
+* [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) is available in [Chrome 63+, Firefox 63+, Opera 55+, Chrome for Android 78+, Firefox for Android 68+](https://caniuse.com/#search=media%20capabilities)
 
 ## Demos
 

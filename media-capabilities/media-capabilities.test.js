@@ -18,6 +18,16 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import { useMediaCapabilities } from './';
 
+const mediaConfig = {
+    type: 'file',
+    audio: {
+        contentType: 'audio/mp3',
+        channels: 2,
+        bitrate: 132700,
+        samplerate: 5200
+    }
+};
+
 const mediaCapabilitiesMapper = {
     'audio/mp3': {
         powerEfficient: true,
@@ -28,7 +38,7 @@ const mediaCapabilitiesMapper = {
 
 describe('useMediaCapabilities', () => {
     test('should return message on unsupported platforms', () => {
-        const { result } = renderHook(() => useMediaCapabilities({ mediaConfig: true }));
+        const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
 
         expect(result.current.mediaCapabilities).toEqual({ unsupported: true });
     });
@@ -55,16 +65,6 @@ describe('useMediaCapabilities', () => {
     });
 
     test('should return MediaDecodingConfiguration for given media configuration', () => {
-        const mediaConfig = {
-            type: 'file',
-            audio: {
-                contentType: 'audio/mp3',
-                channels: 2,
-                bitrate: 132700,
-                samplerate: 5200
-            }
-        };
-
         Object.defineProperty(window.navigator, 'mediaCapabilities', {
             value: {
                 decodingInfo: (mediaConfig) => mediaCapabilitiesMapper[mediaConfig.audio.contentType]
@@ -73,7 +73,7 @@ describe('useMediaCapabilities', () => {
             writable: true
         });
 
-        const { result } = renderHook(() => useMediaCapabilities({ mediaConfig }));
+        const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
 
         expect(result.current.mediaCapabilities).toEqual({
             powerEfficient: true,
