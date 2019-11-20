@@ -1,5 +1,5 @@
-export { default as useNetworkStatus } from './network';
-export { default as useSaveData } from './save-data';
-export { default as useMemoryStatus } from './memory';
-export { default as useHardwareConcurrency } from './hardware-concurrency';
-export { default as useMediaCapabilities } from './media-capabilities';
+export { useNetworkStatus } from './network';
+export { useSaveData } from './save-data';
+export { useMemoryStatus } from './memory';
+export { useHardwareConcurrency } from './hardware-concurrency';
+export { useMediaCapabilities } from './media-capabilities'
