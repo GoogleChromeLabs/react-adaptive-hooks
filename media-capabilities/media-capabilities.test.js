@@ -37,13 +37,13 @@ const mediaCapabilitiesMapper = {
 }
 
 describe('useMediaCapabilities', () => {
-    test('should return message on unsupported platforms', () => {
+    test('should return unsupported flag on unsupported platforms', () => {
         const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
 
         expect(result.current.mediaCapabilities).toEqual({ unsupported: true });
     });
 
-    test('should return message on unsupported platforms and no config is given', () => {
+    test('should return unsupported and missingMediaConfig flags on unsupported platforms and no config is given', () => {
         const { result } = renderHook(() => useMediaCapabilities());
 
         expect(result.current.mediaCapabilities).toEqual({
@@ -52,7 +52,7 @@ describe('useMediaCapabilities', () => {
         });
     });
 
-    test('should return message when no config is given', () => {
+    test('should return missingMediaConfig when no config is given', () => {
         Object.defineProperty(window.navigator, 'mediaCapabilities', {
             value: true,
             configurable: true,
@@ -61,7 +61,7 @@ describe('useMediaCapabilities', () => {
 
         const { result } = renderHook(() => useMediaCapabilities());
 
-        expect(result.current.mediaCapabilities).toEqual({ 'missingMediaConfig': true });
+        expect(result.current.mediaCapabilities).toEqual({ missingMediaConfig: true });
     });
 
     test('should return MediaDecodingConfiguration for given media configuration', () => {
