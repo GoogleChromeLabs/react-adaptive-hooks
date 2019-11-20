@@ -1,4 +1,4 @@
-export { default as useNetworkStatus } from './network';
-export { default as useSaveData } from './save-data';
-export { default as useMemoryStatus } from './memory';
-export { default as useHardwareConcurrency } from './hardware-concurrency';
+export { useNetworkStatus } from './network';
+export { useSaveData } from './save-data';
+export { useMemoryStatus } from './memory';
+export { useHardwareConcurrency } from './hardware-concurrency';
