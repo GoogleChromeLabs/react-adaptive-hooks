@@ -37,8 +37,6 @@ and then use them in your components. Examples for each hook and utility can be 
 
 `useNetworkStatus` React hook for getting network status (effective connection type)
 
-This hook accepts an optional `initialEffectiveConnectionType` string argument, which can be used to provide a `effectiveConnectionType` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass an [ECT Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#ect) to detect the effective network connection type.
-
 ```js
 import React from 'react';
 
@@ -70,11 +68,17 @@ const MyComponent = () => {
 };
 ```
 
+This hook accepts an optional `initialEffectiveConnectionType` string argument, which can be used to provide a `effectiveConnectionType` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass an [ECT Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#ect) to detect the effective network connection type.
+
+```js
+// Inside of a functional React component
+const initialEffectiveConnectionType = '4g';
+const { effectiveConnectionType } = useNetworkStatus(initialEffectiveConnectionType);
+```
+
 ### Save Data
 
 `useSaveData` Utility for getting Save Data whether it's Lite mode enabled or not
-
-This hook accepts an optional `initialSaveDataStatus` boolean argument, which can be used to provide a `saveData` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Save-Data Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) that has been converted to a boolean to detect the user's data saving preference.
 
 ```js
 import React from 'react';
@@ -89,6 +93,14 @@ const MyComponent = () => {
     </div>
   );
 };
+```
+
+This hook accepts an optional `initialSaveDataStatus` boolean argument, which can be used to provide a `saveData` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Save-Data Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) that has been converted to a boolean to detect the user's data saving preference.
+
+```js
+// Inside of a functional React component
+const initialSaveDataStatus = true;
+const { saveData } = useSaveData(initialSaveDataStatus);
 ```
 
 ### CPU Cores / Hardware Concurrency
@@ -114,8 +126,6 @@ const MyComponent = () => {
 
 `useMemoryStatus` Utility for getting memory status of the device
 
-This hook accepts an optional `initialMemoryStatus` object argument, which can be used to provide a `deviceMemory` state value when the user's browser does not support the relevant [DeviceMemory API](https://github.com/w3c/device-memory). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Device-Memory Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) to detect the memory capacity of the user's device.
-
 ```js
 import React from 'react';
 
@@ -129,6 +139,14 @@ const MyComponent = () => {
     </div>
   );
 };
+```
+
+This hook accepts an optional `initialMemoryStatus` object argument, which can be used to provide a `deviceMemory` state value when the user's browser does not support the relevant [DeviceMemory API](https://github.com/w3c/device-memory). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Device-Memory Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) to detect the memory capacity of the user's device.
+
+```js
+// Inside of a functional React component
+const initialMemoryStatus = { deviceMemory: 4 };
+const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 ```
 
 ### Adaptive Code-loading & Code-splitting

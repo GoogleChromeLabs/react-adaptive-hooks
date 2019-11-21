@@ -32,7 +32,10 @@ describe('useNetworkStatus', () => {
     Object.values(ectStatusListeners).forEach(listener => listener.mockClear());
   });
 
-  // Tests that addEventListener or removeEventListener was called during the lifecycle of the useEffect hook within useNetworkStatus
+  /**
+   * Tests that addEventListener or removeEventListener was called during the
+   * lifecycle of the useEffect hook within useNetworkStatus
+   */
   const testEctStatusEventListenerMethod = method => {
     expect(method).toBeCalledTimes(1);
     expect(method.mock.calls[0][0]).toEqual('change');
