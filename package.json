@@ -2,13 +2,17 @@
   "name": "react-adaptive-hooks",
   "version": "0.0.5",
   "description": "Give users a great experience best suited to their device and network constraints",
-  "main": "index.js",
+  "main": "build/react-adaptive-hooks.js",
+  "module": "build/react-adaptive-hooks.module.js",
+  "source": "src/index.js",
   "repository": "https://github.com/GoogleChromeLabs/react-adaptive-hooks",
   "author": "Google Chrome",
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "microbundle --sourcemap false --format es,cjs",
+    "dev": "microbundle watch --no-compress --format es,cjs"
   },
   "peerDependencies": {
     "react": "^16.8.0"
@@ -17,13 +21,14 @@
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "react": "16.9.0",
-    "react-dom": "16.9.0",
-    "ua-parser-js": "^0.7.20",
     "@testing-library/react-hooks": "^1.1.0",
     "babel-polyfill": "^6.26.0",
     "jest": "^24.8.0",
-    "react-test-renderer": "16.9.0"
+    "microbundle": "^0.11.0",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-test-renderer": "16.9.0",
+    "ua-parser-js": "^0.7.20"
   },
   "keywords": [
     "react-hooks",
