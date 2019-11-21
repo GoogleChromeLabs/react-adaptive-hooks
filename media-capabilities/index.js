@@ -14,29 +14,25 @@
  * limitations under the License.
  */
 
-import { useState, useEffect } from 'react';
-
 const useMediaCapabilities = (mediaConfig) => {
-    let initialMediaCapabilities = null
+    let mediaCapabilities = null
 
-    if (!('mediaCapabilities' in navigator)) {
-        initialMediaCapabilities = {
+    if (typeof window === 'undefined' || !('mediaCapabilities' in navigator)) {
+        mediaCapabilities = {
             unsupported: true
         }
     }
 
     if (!mediaConfig) {
-        initialMediaCapabilities = {
-            ...initialMediaCapabilities,
+        mediaCapabilities = {
+            ...mediaCapabilities,
             missingMediaConfig: true
         }
     }
 
-    const [mediaCapabilities, setMediaCapabilities] = useState(initialMediaCapabilities);
-
-    useEffect(() => {
-        !initialMediaCapabilities && setMediaCapabilities(navigator.mediaCapabilities.decodingInfo(mediaConfig));
-    }, []);
+    if (!mediaCapabilities) {
+        mediaCapabilities = navigator.mediaCapabilities.decodingInfo(mediaConfig)
+    }
 
     return { mediaCapabilities };
 };
