@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-const useMediaCapabilities = (mediaConfig) => {
+const useMediaCapabilities = (mediaConfig, initialMediaCapabilities = {}) => {
     let mediaCapabilities = {
         supported: typeof window !== 'undefined' && 'mediaCapabilities' in navigator,
         hasMediaConfig: !!mediaConfig
     }
 
-    if (mediaCapabilities.supported && mediaCapabilities.hasMediaConfig) {
-        mediaCapabilities = navigator.mediaCapabilities.decodingInfo(mediaConfig)
-    }
+    mediaCapabilities = (mediaCapabilities.supported && mediaCapabilities.hasMediaConfig) ?
+        navigator.mediaCapabilities.decodingInfo(mediaConfig) :
+        {
+            ...mediaCapabilities,
+            ...initialMediaCapabilities
+        }
 
     return { mediaCapabilities };
 };
 
-export { useMediaCapabilities };
+export {
+    useMediaCapabilities
+};

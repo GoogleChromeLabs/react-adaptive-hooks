@@ -37,30 +37,44 @@ const mediaCapabilitiesMapper = {
 }
 
 describe('useMediaCapabilities', () => {
-    test('should return supported flag on supported platforms', () => {
+    test('should return supported flag on unsupported platforms', () => {
         const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
 
         expect(result.current.mediaCapabilities).toEqual({ hasMediaConfig: true, supported: false });
     });
 
-    test('should return supported and hasMediaConfig flags on supported platforms and no config is given', () => {
+    test('should return supported and hasMediaConfig flags on unsupported platforms and no config given', () => {
         const { result } = renderHook(() => useMediaCapabilities());
-
+        
         expect(result.current.mediaCapabilities).toEqual({ hasMediaConfig: false, supported: false });
     });
 
-    test('should return hasMediaConfig flag when no config is given', () => {
+    test('should return initialMediaCapabilities for unsupported', () => {
+        const initialMediaCapabilities = {
+            supported: true,
+            smooth: false,
+            powerEfficient: true
+        };
+
+        const { result } = renderHook(() => useMediaCapabilities(mediaConfig, initialMediaCapabilities));
+
+        expect(result.current.mediaCapabilities.supported).toBe(true);
+        expect(result.current.mediaCapabilities.smooth).toEqual(false);
+        expect(result.current.mediaCapabilities.powerEfficient).toEqual(true);
+    });
+
+    test('should return hasMediaConfig flag when no config given', () => {
         Object.defineProperty(window.navigator, 'mediaCapabilities', {
             value: true,
             configurable: true,
             writable: true
         });
-
+        
         const { result } = renderHook(() => useMediaCapabilities());
-
+        
         expect(result.current.mediaCapabilities).toEqual({ hasMediaConfig: false, supported: true });
     });
-
+    
     test('should return MediaDecodingConfiguration for given media configuration', () => {
         Object.defineProperty(window.navigator, 'mediaCapabilities', {
             value: {
