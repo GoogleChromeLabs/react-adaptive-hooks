@@ -75,6 +75,8 @@ const initialEffectiveConnectionType = '4g';
 const { effectiveConnectionType } = useNetworkStatus(initialEffectiveConnectionType);
 ```
 
+effectiveConnectionType values can be slow-2g, 2g, 3g, or 4g.
+
 ### Save Data
 
 `useSaveData` utility for adapting based on the user's browser Data Saver preferences.
@@ -102,6 +104,8 @@ const initialSaveDataStatus = true;
 const { saveData } = useSaveData(initialSaveDataStatus);
 ```
 
+saveData values can be true or false.
+
 ### CPU Cores / Hardware Concurrency
 
 `useHardwareConcurrency` utility for adapting to the number of logical CPU processor cores on the user's device.
@@ -120,6 +124,8 @@ const MyComponent = () => {
   );
 };
 ```
+
+numberOfLogicalProcessors values can be the number of logical processors available to run threads on the user's computer.
 
 ### Memory
 
@@ -147,6 +153,8 @@ This hook accepts an optional `initialMemoryStatus` object argument, which can b
 const initialMemoryStatus = { deviceMemory: 4 };
 const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 ```
+
+deviceMemory values can be the approximate amount of device memory in gigabytes.
 
 ### Adaptive Code-loading & Code-splitting
 
@@ -211,8 +219,6 @@ const Component = React.lazy(() => {
 
   let module;
   switch (effectiveType) {
-    case 'slow-2g':
-    case '2g':
     case '3g':
       module = import(/* webpackChunkName: "light" */ './Light.js');
       break;
