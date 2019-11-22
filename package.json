@@ -14,7 +14,7 @@
     "build": "microbundle",
     "dev": "microbundle watch",
     "prepare": "npm run build",
-    "test": "jest"
+    "test": "jest",
     "test:coverage": "jest --coverage"
   },
   "peerDependencies": {
