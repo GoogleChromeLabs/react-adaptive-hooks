@@ -15,22 +15,12 @@
  */
 
 const useMediaCapabilities = (mediaConfig) => {
-    let mediaCapabilities = null
-
-    if (typeof window === 'undefined' || !('mediaCapabilities' in navigator)) {
-        mediaCapabilities = {
-            unsupported: true
-        }
+    let mediaCapabilities = {
+        supported: typeof window !== 'undefined' && 'mediaCapabilities' in navigator,
+        hasMediaConfig: !!mediaConfig
     }
 
-    if (!mediaConfig) {
-        mediaCapabilities = {
-            ...mediaCapabilities,
-            missingMediaConfig: true
-        }
-    }
-
-    if (!mediaCapabilities) {
+    if (mediaCapabilities.supported && mediaCapabilities.hasMediaConfig) {
         mediaCapabilities = navigator.mediaCapabilities.decodingInfo(mediaConfig)
     }
 
