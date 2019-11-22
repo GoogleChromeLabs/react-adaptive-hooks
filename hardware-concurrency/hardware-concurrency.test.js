@@ -22,10 +22,33 @@ afterEach(function() {
 });
 
 describe('useHardwareConcurrency', () => {
+  const navigator = window.navigator;
+
+  afterEach(() => {
+    if (!window.navigator) window.navigator = navigator;
+  });
+
+  test(`should return "true" for unsupported case`, () => {
+    Object.defineProperty(window, 'navigator', {
+      value: undefined,
+      configurable: true,
+      writable: true
+    });
+
+    const { useHardwareConcurrency } = require('./');
+    const { result } = renderHook(() => useHardwareConcurrency());
+
+    expect(result.current.unsupported).toBe(true);
+  });
+
   test(`should return window.navigator.hardwareConcurrency`, () => {
     const { useHardwareConcurrency } = require('./');
     const { result } = renderHook(() => useHardwareConcurrency());
-    expect(result.current.numberOfLogicalProcessors).toBe(window.navigator.hardwareConcurrency);
+
+    expect(result.current.numberOfLogicalProcessors).toBe(
+      window.navigator.hardwareConcurrency
+    );
+    expect(result.current.unsupported).toBe(false);
   });
 
   test('should return 4 for device of hardwareConcurrency = 4', () => {
@@ -38,6 +61,7 @@ describe('useHardwareConcurrency', () => {
     const { result } = renderHook(() => useHardwareConcurrency());
 
     expect(result.current.numberOfLogicalProcessors).toEqual(4);
+    expect(result.current.unsupported).toBe(false);
   });
 
   test('should return 2 for device of hardwareConcurrency = 2', () => {
@@ -50,5 +74,6 @@ describe('useHardwareConcurrency', () => {
     const { result } = renderHook(() => useHardwareConcurrency());
 
     expect(result.current.numberOfLogicalProcessors).toEqual(2);
+    expect(result.current.unsupported).toBe(false);
   });
 });
