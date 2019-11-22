@@ -15,6 +15,7 @@
     "dev": "microbundle watch",
     "prepare": "npm run build",
     "test": "jest"
+    "test:coverage": "jest --coverage"
   },
   "peerDependencies": {
     "react": "^16.8.0"
