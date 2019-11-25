@@ -52,4 +52,4 @@ const useNetworkStatus = initialEffectiveConnectionType => {
   return { ...networkStatus, setNetworkStatus };
 };
 
-export { useNetworkStatus };
+export { useNetworkStatus, unsupported };
