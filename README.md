@@ -67,6 +67,8 @@ const MyComponent = () => {
 };
 ```
 
+`effectiveConnectionType` values can be `slow-2g`, `2g`, `3g`, or `4g`.
+
 This hook accepts an optional `initialEffectiveConnectionType` string argument, which can be used to provide a `effectiveConnectionType` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass an [ECT Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#ect) to detect the effective network connection type.
 
 ```js
@@ -74,8 +76,6 @@ This hook accepts an optional `initialEffectiveConnectionType` string argument, 
 const initialEffectiveConnectionType = '4g';
 const { effectiveConnectionType } = useNetworkStatus(initialEffectiveConnectionType);
 ```
-
-effectiveConnectionType values can be slow-2g, 2g, 3g, or 4g.
 
 ### Save Data
 
@@ -96,6 +96,8 @@ const MyComponent = () => {
 };
 ```
 
+`saveData` values can be `true` or `false`.
+
 This hook accepts an optional `initialSaveDataStatus` boolean argument, which can be used to provide a `saveData` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Save-Data Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) that has been converted to a boolean to detect the user's data saving preference.
 
 ```js
@@ -103,8 +105,6 @@ This hook accepts an optional `initialSaveDataStatus` boolean argument, which ca
 const initialSaveDataStatus = true;
 const { saveData } = useSaveData(initialSaveDataStatus);
 ```
-
-saveData values can be true or false.
 
 ### CPU Cores / Hardware Concurrency
 
@@ -125,7 +125,7 @@ const MyComponent = () => {
 };
 ```
 
-numberOfLogicalProcessors values can be the number of logical processors available to run threads on the user's computer.
+`numberOfLogicalProcessors` values can be the number of logical processors available to run threads on the user's device. 
 
 ### Memory
 
@@ -146,6 +146,8 @@ const MyComponent = () => {
 };
 ```
 
+`deviceMemory` values can be the approximate amount of device memory in gigabytes.
+
 This hook accepts an optional `initialMemoryStatus` object argument, which can be used to provide a `deviceMemory` state value when the user's browser does not support the relevant [DeviceMemory API](https://github.com/w3c/device-memory). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Device-Memory Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) to detect the memory capacity of the user's device.
 
 ```js
@@ -153,8 +155,6 @@ This hook accepts an optional `initialMemoryStatus` object argument, which can b
 const initialMemoryStatus = { deviceMemory: 4 };
 const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 ```
-
-deviceMemory values can be the approximate amount of device memory in gigabytes.
 
 ### Adaptive Code-loading & Code-splitting
 
