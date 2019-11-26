@@ -30,7 +30,6 @@ import { useSaveData } from 'react-adaptive-hooks/save-data';
 import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
 import { useMemoryStatus } from 'react-adaptive-hooks/memory';
 import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
-
 ```
 
 and then use them in your components. Examples for each hook and utility can be found below:
@@ -70,6 +69,8 @@ const MyComponent = () => {
 };
 ```
 
+`effectiveConnectionType` values can be `slow-2g`, `2g`, `3g`, or `4g`.
+
 This hook accepts an optional `initialEffectiveConnectionType` string argument, which can be used to provide a `effectiveConnectionType` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass an [ECT Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#ect) to detect the effective network connection type.
 
 ```js
@@ -96,6 +97,8 @@ const MyComponent = () => {
   );
 };
 ```
+
+`saveData` values can be `true` or `false`.
 
 This hook accepts an optional `initialSaveDataStatus` boolean argument, which can be used to provide a `saveData` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Save-Data Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) that has been converted to a boolean to detect the user's data saving preference.
 
@@ -124,6 +127,8 @@ const MyComponent = () => {
 };
 ```
 
+`numberOfLogicalProcessors` values can be the number of logical processors available to run threads on the user's device. 
+
 ### Memory
 
 `useMemoryStatus` utility for adapting based on the user's device memory (RAM)
@@ -142,6 +147,8 @@ const MyComponent = () => {
   );
 };
 ```
+
+`deviceMemory` values can be the approximate amount of device memory in gigabytes.
 
 This hook accepts an optional `initialMemoryStatus` object argument, which can be used to provide a `deviceMemory` state value when the user's browser does not support the relevant [DeviceMemory API](https://github.com/w3c/device-memory). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Device-Memory Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) to detect the memory capacity of the user's device.
 
@@ -185,7 +192,7 @@ import { useNetworkStatus } from 'react-adaptive-hooks/network';
 const Full = lazy(() => import(/* webpackChunkName: "full" */ './Full.js'));
 const Light = lazy(() => import(/* webpackChunkName: "light" */ './Light.js'));
 
-function MyComponent() {
+const MyComponent = () => {
   const { effectiveConnectionType } = useNetworkStatus();
   return (
     <div>
@@ -194,7 +201,7 @@ function MyComponent() {
       </Suspense>
     </div>
   );
-}
+};
 
 export default MyComponent;
 ```
@@ -204,7 +211,7 @@ Light.js:
 import React from 'react';
 
 const Light = ({ imageUrl, ...rest }) => (
-  <img src={imageUrl} alt='product' {...rest} />
+  <img src={imageUrl} {...rest} />
 );
 
 export default Light;
@@ -234,31 +241,29 @@ const Component = React.lazy(() => {
 
   let module;
   switch (effectiveType) {
-    case "3g":
-      module = import(/* webpackChunkName: "light" */ "./Light.js");
+    case '3g':
+      module = import(/* webpackChunkName: "light" */ './Light.js');
       break;
-    case "4g":
-      module = import(/* webpackChunkName: "full" */ "./Full.js");
+    case '4g':
+      module = import(/* webpackChunkName: "full" */ './Full.js');
       break;
     default:
-      module = import(/* webpackChunkName: "full" */ "./Full.js");
+      module = import(/* webpackChunkName: "full" */ './Full.js');
       break;
   }
 
   return module;
 });
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Suspense fallback={<div>Loading...</div>}>
-          <Component />
-        </Suspense>
-      </header>
+    <div className='App'>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Component />
+      </Suspense>
     </div>
   );
-}
+};
 
 export default App;
 ```
@@ -304,7 +309,7 @@ export default App;
 
 * [Memory considerate loading](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/cra-memory-considerate-loading) with create-react-app ([Live](https://adaptive-loading.web.app/cra-memory-considerate-loading/))
 * [Memory considerate loading (SketchFab version)](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/cra-memory-considerate-loading-sketchfab) with create-react-app ([Live](https://adaptive-loading.web.app/cra-memory-considerate-loading-sketchfab/))
-* [Memory-considerate animation-toggling](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/cna-memory-considerate-animation) with create-next-app ([Live](https://cna-memory-animation.firebaseapp.com/))
+* [Memory-considerate animation-toggling](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/cna-memory-considerate-animation) with create-next-app ([Live](https://adaptive-loading.web.app/cna-memory-considerate-animation/))
 
 * [React Dixie Mesh - memory considerate loading](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/react-dixie-memory-considerate-loading) ([Live](https://adaptive-loading.web.app/react-dixie-memory-considerate-loading/))
 
