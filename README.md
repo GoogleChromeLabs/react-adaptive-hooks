@@ -70,7 +70,7 @@ const MyComponent = () => {
 };
 ```
 
-`effectiveConnectionType` values can be `slow-2g`, `2g`, `3g`, or `4g`.
+`effectiveConnectionType` values can be `slow-2g`, `2g`, `3g`, `4g` or `network-unavailable`.
 
 This hook accepts an optional `initialEffectiveConnectionType` string argument, which can be used to provide a `effectiveConnectionType` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass an [ECT Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#ect) to detect the effective network connection type.
 
