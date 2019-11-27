@@ -113,6 +113,19 @@ describe('useNetworkStatus', () => {
     expect(result.current.effectiveConnectionType).toEqual('4g');
   });
 
+  test('should update the effectiveConnectionType state when network get disabled', () => {
+    global.navigator.connection = {
+      ...ectStatusListeners,
+      effectiveType: '2g'
+    };
+
+    const { result } = renderHook(() => useNetworkStatus());
+    global.navigator.connection.effectiveType = 'network-unavailable';
+    act(() => map.change());
+
+    expect(result.current.effectiveConnectionType).toEqual('network-unavailable');
+  });
+
   test('should remove the listener for the navigator.connection change event on unmount', () => {
     global.navigator.connection = {
       ...ectStatusListeners,

@@ -37,9 +37,10 @@ const useNetworkStatus = initialEffectiveConnectionType => {
   useEffect(() => {
     if (!unsupported) {
       const navigatorConnection = navigator.connection;
+      const networkAvailibility = navigator.onLine;
       const updateECTStatus = () => {
         setNetworkStatus({
-          effectiveConnectionType: navigatorConnection.effectiveType
+          effectiveConnectionType: networkAvailibility ? navigatorConnection.effectiveType : 'network-unavailable'
         });
       };
       navigatorConnection.addEventListener('change', updateECTStatus);

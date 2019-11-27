@@ -58,6 +58,9 @@ const MyComponent = () => {
     case '4g':
       media = <video muted controls>...</video>;
       break;
+    case 'network-unavailable':
+      media = <img src='...' alt='low resolution' />;
+      break;
     default:
       media = <video muted controls>...</video>;
       break;
