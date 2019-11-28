@@ -160,23 +160,51 @@ const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 
 ### Media Capabilities
 
-`useMediaCapabilities` utility for adapting based on the user's device media capabilities
+`useMediaCapabilities` utility for adapting based on the user's device media capabilities.
+
+**Use case:** useful for checking if we can play a certain media asset. For example, Safari does not support WebM so we want to fallback to mp4 but if Safari does support WebM it will automatically load WebM videos.
 
 ```js
 import React from 'react';
 
 import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
 
-const MyComponent = ({ mediaConfig }) => {
-  const { mediaCapabilities } = useMediaCapabilities(mediaConfig);
+const webmMediaConfig = {
+  type : 'file', // 'record', 'transmission', or 'media-source'
+  video : {
+    contentType : 'video/webm;codecs=vp8', // valid content type
+    width : 800,     // width of the video
+    height : 600,    // height of the video
+    bitrate : 10000, // number of bits used to encode 1s of video
+    framerate : 30   // number of frames making up that 1s.
+  }
+};
+
+const initialDecodingInfo = { showWarning: true }
+
+const MyComponent = ({ videoSources }) => {
+  const { mediaCapabilities } = useMediaCapabilities(webmMediaConfig, initialDecodingInfo);
 
   return (
     <div>
-      { mediaCapabilities.supported ? <video muted controls>...</video> : <img src='...' /> }
+      {
+        mediaCapabilities.supported
+          ? <video src={videoSources.webm} controls>...</video>
+          : <video src={videoSources.mp4}  controls>...</video>
+      }
+      {
+        mediaCapabilities.showWarning &&
+          <div>
+            Defaulted to mp4.
+            Couldn't test webm support, either the media capabilities api is unavailable or no media configuration was given.
+          </div>
+      }
     </div>
   );
 };
 ```
+
+`useMediaCapabilities()` accepts a [media configuration](https://developer.mozilla.org/en-US/docs/Web/API/MediaConfiguration) object and an optional `initialMediaCapabilities` object to return when no media config is given or the Media Capabilities API is not available.
 
 ### Adaptive Code-loading & Code-splitting
 
