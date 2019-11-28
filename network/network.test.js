@@ -133,6 +133,7 @@ describe('useNetworkStatus', () => {
     const { result } = renderHook(() => useNetworkStatus());
     act(() => map.change())
 
+    expect(global.navigator.onLine).toEqual(true)
     expect(result.current.effectiveConnectionType).toEqual('4g');
   });
 
