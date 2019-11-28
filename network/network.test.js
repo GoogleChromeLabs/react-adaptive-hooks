@@ -37,9 +37,13 @@ describe('useNetworkStatus', () => {
    * lifecycle of the useEffect hook within useNetworkStatus
    */
   const testEctStatusEventListenerMethod = method => {
-    expect(method).toBeCalledTimes(1);
+    expect(method).toBeCalledTimes(3);
     expect(method.mock.calls[0][0]).toEqual('change');
+    expect(method.mock.calls[1][0]).toEqual('offline');
+    expect(method.mock.calls[2][0]).toEqual('online');
     expect(method.mock.calls[0][1].constructor).toEqual(Function);
+    expect(method.mock.calls[1][1].constructor).toEqual(Function);
+    expect(method.mock.calls[2][1].constructor).toEqual(Function);
   };
 
   test(`should return "true" for unsupported case`, () => {
@@ -114,16 +118,26 @@ describe('useNetworkStatus', () => {
   });
 
   test('should update the effectiveConnectionType state when network get disabled', () => {
-    global.navigator.connection = {
-      ...ectStatusListeners,
-      effectiveType: '2g'
-    };
-
+    jest.spyOn(global.navigator, 'onLine', 'get').mockReturnValueOnce(false);
     const { result } = renderHook(() => useNetworkStatus());
-    global.navigator.connection.effectiveType = 'network-unavailable';
-    act(() => map.change());
+    act(() => map.offline());
 
     expect(result.current.effectiveConnectionType).toEqual('network-unavailable');
+  });
+
+  test('should update the effectiveConnectionType state when network gets enabled again', () => {
+    jest.spyOn(global.navigator, 'onLine', 'get').mockReturnValueOnce(false);
+    expect(global.navigator.onLine).toEqual(false)
+
+    jest.spyOn(global.navigator, 'onLine', 'get').mockReturnValueOnce(true);
+    global.navigator.connection = {
+      ...ectStatusListeners,
+      effectiveType: '4g'
+    };
+    const { result } = renderHook(() => useNetworkStatus());
+    act(() => map.online())
+
+    expect(result.current.effectiveConnectionType).toEqual('4g');
   });
 
   test('should remove the listener for the navigator.connection change event on unmount', () => {
