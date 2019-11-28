@@ -44,12 +44,12 @@ const useNetworkStatus = initialEffectiveConnectionType => {
         });
       };
       navigatorConnection.addEventListener('change', updateECTStatus);
-      navigatorConnection.addEventListener('offline', updateECTStatus);
-      navigatorConnection.addEventListener('online', updateECTStatus);
+      window.addEventListener('offline', updateECTStatus);
+      window.addEventListener('online', updateECTStatus);
       return () => {
         navigatorConnection.removeEventListener('change', updateECTStatus);
-        navigatorConnection.removeEventListener('offline', updateECTStatus);
-        navigatorConnection.removeEventListener('online', updateECTStatus);
+        window.removeEventListener('offline', updateECTStatus);
+        window.removeEventListener('online', updateECTStatus);
       };
     }
   }, []);

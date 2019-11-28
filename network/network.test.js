@@ -37,13 +37,9 @@ describe('useNetworkStatus', () => {
    * lifecycle of the useEffect hook within useNetworkStatus
    */
   const testEctStatusEventListenerMethod = method => {
-    expect(method).toBeCalledTimes(3);
+    expect(method).toBeCalledTimes(1);
     expect(method.mock.calls[0][0]).toEqual('change');
-    expect(method.mock.calls[1][0]).toEqual('offline');
-    expect(method.mock.calls[2][0]).toEqual('online');
     expect(method.mock.calls[0][1].constructor).toEqual(Function);
-    expect(method.mock.calls[1][1].constructor).toEqual(Function);
-    expect(method.mock.calls[2][1].constructor).toEqual(Function);
   };
 
   test(`should return "true" for unsupported case`, () => {
@@ -120,7 +116,7 @@ describe('useNetworkStatus', () => {
   test('should update the effectiveConnectionType state when network get disabled', () => {
     jest.spyOn(global.navigator, 'onLine', 'get').mockReturnValueOnce(false);
     const { result } = renderHook(() => useNetworkStatus());
-    act(() => map.offline());
+    act(() => map.change());
 
     expect(result.current.effectiveConnectionType).toEqual('network-unavailable');
   });
@@ -135,7 +131,7 @@ describe('useNetworkStatus', () => {
       effectiveType: '4g'
     };
     const { result } = renderHook(() => useNetworkStatus());
-    act(() => map.online())
+    act(() => map.change())
 
     expect(result.current.effectiveConnectionType).toEqual('4g');
   });
