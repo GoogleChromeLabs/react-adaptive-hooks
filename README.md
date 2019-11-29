@@ -162,7 +162,7 @@ const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 
 `useMediaCapabilities` utility for adapting based on the user's device media capabilities.
 
-**Use case:** useful for checking if we can play a certain media asset. For example, Safari does not support WebM so we want to fallback to mp4 but if Safari does support WebM it will automatically load WebM videos.
+**Use case:** this hook can be used to check if we can play a certain content type. For example, Safari does not support WebM so we want to fallback to MP4 but if Safari at some point does support WebM it will automatically load WebM videos.
 
 ```js
 import React from 'react';
@@ -194,7 +194,7 @@ const MyComponent = ({ videoSources }) => {
       }
       {
         mediaCapabilities.showWarning &&
-          <div>
+          <div class="muted">
             Defaulted to mp4.
             Couldn't test webm support, either the media capabilities api is unavailable or no media configuration was given.
           </div>
@@ -204,7 +204,7 @@ const MyComponent = ({ videoSources }) => {
 };
 ```
 
-`useMediaCapabilities()` accepts a [media configuration](https://developer.mozilla.org/en-US/docs/Web/API/MediaConfiguration) object and an optional `initialMediaCapabilities` object to return when no media config is given or the Media Capabilities API is not available.
+This hook accepts a [media configuration](https://developer.mozilla.org/en-US/docs/Web/API/MediaConfiguration) object argument and an optional `initialMediaCapabilities` object argument, which can be used to provide a `mediaCapabilities` state value when the user's browser does not support the relevant [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) or no media configuration was given.
 
 ### Adaptive Code-loading & Code-splitting
 
