@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "private": false,
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/index.module.js",
   "unpkg": "dist/index.umd.js",
   "source": "index.js",
   "scripts": {
