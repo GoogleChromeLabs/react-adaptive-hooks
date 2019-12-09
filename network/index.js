@@ -19,7 +19,7 @@ import { useState, useEffect } from 'react';
 let unsupported;
 
 const useNetworkStatus = initialEffectiveConnectionType => {
-  if ('connection' in navigator && 'effectiveType' in navigator.connection) {
+  if (typeof navigator !== 'undefined' && 'connection' in navigator && 'effectiveType' in navigator.connection) {
     unsupported = false;
   } else {
     unsupported = true;

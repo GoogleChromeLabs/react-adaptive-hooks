@@ -17,7 +17,7 @@
 let unsupported;
 
 const useSaveData = (initialSaveDataStatus = null) => {
-  if ('connection' in navigator && 'saveData' in navigator.connection) {
+  if (typeof navigator !== 'undefined' && 'connection' in navigator && 'saveData' in navigator.connection) {
     unsupported = false;
   } else {
     unsupported = true;
