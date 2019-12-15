@@ -246,6 +246,17 @@ const App = () => {
 export default App;
 ```
 
+## Notes
+
+The build version of this package is ESM by default but it's not supported on Server Side for now. So when we're using this package on universal app like Next.js app with server side rendering, we need to  
+
+* transpile the package by directly configuring babel or installing some plugin like [next-transpile-modules](https://github.com/martpie/next-transpile-modules). ([example project](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading))
+
+* use UMD build like in the following code-snippet. ([example project](https://glitch.com/edit/#!/anton-karlovskiy-next-show-adaptive-loading?path=utils/hooks.js:19:91))
+```
+import { useNetworkStatus, useSaveData, useHardwareConcurrency, useMemoryStatus } from 'react-adaptive-hooks/dist/index.umd.js';
+```
+
 ## Browser Support
 
 * [Network Information API - effectiveType](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/effectiveType) is available in [Chrome 61+, Opera 48+, Edge 76+, Chrome for Android 76+, Firefox for Android 68+](https://caniuse.com/#search=effectiveType)
@@ -292,7 +303,7 @@ export default App;
 ### Hybrid
 
 * [React Youtube - adaptive loading with mix of network, memory and hardware concurrency](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/react-youtube-adaptive-loading) ([Live](https://adaptive-loading.web.app/react-youtube-adaptive-loading/))
-
+* [Next Show - adaptive loading with mix of network, memory and Client Hints](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading) ([demo](https://adaptive-loading.web.app/next-show-adaptive-loading/))
 
 ## References
 
