@@ -16,33 +16,29 @@
 
 import { useState, useEffect } from 'react';
 
-let unsupported;
-
-const useNetworkStatus = initialEffectiveConnectionType => {
-  if (typeof navigator !== 'undefined' && 'connection' in navigator && 'effectiveType' in navigator.connection) {
-    unsupported = false;
-  } else {
-    unsupported = true;
-  }
+const useNetworkStatus = (initialEffectiveConnectionType = null) => {
+  const supported = (typeof navigator !== 'undefined' && 'connection' in navigator && 'effectiveType' in navigator.connection)
 
   const initialNetworkStatus = {
-    unsupported,
-    effectiveConnectionType: unsupported
-      ? initialEffectiveConnectionType
-      : navigator.connection.effectiveType
+    unsupported: !supported,
+    effectiveConnectionType: supported
+      ? navigator.connection.effectiveType
+      : initialEffectiveConnectionType
   };
 
   const [networkStatus, setNetworkStatus] = useState(initialNetworkStatus);
 
   useEffect(() => {
-    if (!unsupported) {
+    if (supported) {
       const navigatorConnection = navigator.connection;
       const updateECTStatus = () => {
         setNetworkStatus({
           effectiveConnectionType: navigatorConnection.effectiveType
         });
       };
+
       navigatorConnection.addEventListener('change', updateECTStatus);
+
       return () => {
         navigatorConnection.removeEventListener('change', updateECTStatus);
       };

@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-let unsupported;
-
 const useSaveData = (initialSaveDataStatus = null) => {
-  if (typeof navigator !== 'undefined' && 'connection' in navigator && 'saveData' in navigator.connection) {
-    unsupported = false;
-  } else {
-    unsupported = true;
-  }
+  const supported = (typeof navigator !== 'undefined' && 'connection' in navigator && 'saveData' in navigator.connection)
 
   return {
-    unsupported,
-    saveData: unsupported
-      ? initialSaveDataStatus
-      : navigator.connection.saveData === true
+    unsupported: !supported,
+    saveData: supported ?
+      navigator.connection.saveData === true :
+      initialSaveDataStatus
   };
 };
 

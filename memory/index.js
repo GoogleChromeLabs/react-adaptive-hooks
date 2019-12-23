@@ -14,34 +14,21 @@
  * limitations under the License.
  */
 
-let unsupported;
-if (typeof navigator !== 'undefined' && 'deviceMemory' in navigator) {
-  unsupported = false;
-} else {
-  unsupported = true;
-}
-let memoryStatus;
-if (!unsupported) {
-  const performanceMemory = 'memory' in performance ? performance.memory : null;
-  memoryStatus = {
-    unsupported,
-    deviceMemory: navigator.deviceMemory,
-    totalJSHeapSize: performanceMemory
-      ? performanceMemory.totalJSHeapSize
-      : null,
-    usedJSHeapSize: performanceMemory ? performanceMemory.usedJSHeapSize : null,
-    jsHeapSizeLimit: performanceMemory
-      ? performanceMemory.jsHeapSizeLimit
-      : null
-  };
-} else {
-  memoryStatus = { unsupported };
-}
+const useMemoryStatus = (initialMemoryStatus = null) => {
+  const supported = (typeof navigator !== 'undefined' && 'deviceMemory' in navigator)
+  const performanceMemory = (typeof performance !== 'undefined' && 'memory' in performance) ? performance.memory : {};
 
-const useMemoryStatus = initialMemoryStatus => {
-  return unsupported && initialMemoryStatus
-    ? { ...memoryStatus, ...initialMemoryStatus }
-    : { ...memoryStatus };
+  const memoryStatus = supported ? {
+    deviceMemory: navigator.deviceMemory,
+    totalJSHeapSize: performanceMemory.totalJSHeapSize || null,
+    usedJSHeapSize: performanceMemory.usedJSHeapSize || null,
+    jsHeapSizeLimit: performanceMemory.jsHeapSizeLimit || null
+  } : initialMemoryStatus;
+
+  return {
+    unsupported: !supported,
+    ...memoryStatus
+  }
 };
 
 export { useMemoryStatus };
