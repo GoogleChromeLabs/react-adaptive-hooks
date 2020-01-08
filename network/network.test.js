@@ -48,6 +48,7 @@ describe('useNetworkStatus', () => {
     expect(result.current.unsupported).toBe(true);
   });
 
+
   test('should return initialEffectiveConnectionType for unsupported case', () => {
     const initialEffectiveConnectionType = '4g';
 
@@ -59,6 +60,18 @@ describe('useNetworkStatus', () => {
     expect(result.current.effectiveConnectionType).toBe(
       initialEffectiveConnectionType
     );
+  });
+
+  test('should return offline of effectiveConnectionType', () => {
+    global.navigator.connection = {
+      ...ectStatusListeners,
+      effectiveType: '4g'
+    };
+    jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(false);
+    const { result } = renderHook(() => useNetworkStatus());
+    testEctStatusEventListenerMethod(ectStatusListeners.addEventListener);
+    expect(result.current.unsupported).toBe(false);
+    expect(result.current.effectiveConnectionType).toEqual('offline');
   });
 
   test('should return 4g of effectiveConnectionType', () => {

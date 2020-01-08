@@ -18,18 +18,31 @@ import { useState, useEffect } from 'react';
 
 let unsupported;
 
+
 const useNetworkStatus = initialEffectiveConnectionType => {
-  if (typeof navigator !== 'undefined' && 'connection' in navigator && 'effectiveType' in navigator.connection) {
+  if (
+    typeof navigator !== 'undefined' &&
+    'connection' in navigator &&
+    'effectiveType' in navigator.connection
+  ) {
     unsupported = false;
   } else {
     unsupported = true;
   }
 
+  const getEffectiveConnectionType = () => {
+    const isOnline = 'onLine' in navigator ? navigator.onLine : true;
+    if (isOnline === false) {
+      return 'offline';
+    }
+    return unsupported
+      ? initialEffectiveConnectionType
+      : navigator.connection.effectiveType;
+  };
+
   const initialNetworkStatus = {
     unsupported,
-    effectiveConnectionType: unsupported
-      ? initialEffectiveConnectionType
-      : navigator.connection.effectiveType
+    effectiveConnectionType: getEffectiveConnectionType(),
   };
 
   const [networkStatus, setNetworkStatus] = useState(initialNetworkStatus);
@@ -39,17 +52,25 @@ const useNetworkStatus = initialEffectiveConnectionType => {
       const navigatorConnection = navigator.connection;
       const updateECTStatus = () => {
         setNetworkStatus({
-          effectiveConnectionType: navigatorConnection.effectiveType
+          effectiveConnectionType:
+            'onLine' in navigator && navigator.onLine === false
+              ? 'offline'
+              : navigatorConnection.effectiveType,
         });
       };
+
       navigatorConnection.addEventListener('change', updateECTStatus);
+      window.addEventListener('offline', updateECTStatus);
+      
       return () => {
         navigatorConnection.removeEventListener('change', updateECTStatus);
+        window.removeEventListener('offline', updateECTStatus);
       };
     }
   }, []);
 
   return { ...networkStatus, setNetworkStatus };
 };
+
 
 export { useNetworkStatus };
