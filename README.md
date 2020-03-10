@@ -8,6 +8,7 @@ This is a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) a
 * [Data Saver preferences](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/saveData)
 * [Device memory](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory)
 * [Logical CPU cores](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency)
+* [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API)
 
 It can be used to add patterns for adaptive resource loading, data-fetching, code-splitting and capability toggling.
 
@@ -28,6 +29,7 @@ import { useNetworkStatus } from 'react-adaptive-hooks/network';
 import { useSaveData } from 'react-adaptive-hooks/save-data';
 import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
 import { useMemoryStatus } from 'react-adaptive-hooks/memory';
+import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
 ```
 
 and then use them in your components. Examples for each hook and utility can be found below:
@@ -156,6 +158,54 @@ const initialMemoryStatus = { deviceMemory: 4 };
 const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 ```
 
+### Media Capabilities
+
+`useMediaCapabilities` utility for adapting based on the user's device media capabilities.
+
+**Use case:** this hook can be used to check if we can play a certain content type. For example, Safari does not support WebM so we want to fallback to MP4 but if Safari at some point does support WebM it will automatically load WebM videos.
+
+```js
+import React from 'react';
+
+import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
+
+const webmMediaConfig = {
+  type : 'file', // 'record', 'transmission', or 'media-source'
+  video : {
+    contentType : 'video/webm;codecs=vp8', // valid content type
+    width : 800,     // width of the video
+    height : 600,    // height of the video
+    bitrate : 10000, // number of bits used to encode 1s of video
+    framerate : 30   // number of frames making up that 1s.
+  }
+};
+
+const initialDecodingInfo = { showWarning: true }
+
+const MyComponent = ({ videoSources }) => {
+  const { mediaCapabilities } = useMediaCapabilities(webmMediaConfig, initialDecodingInfo);
+
+  return (
+    <div>
+      {
+        mediaCapabilities.supported
+          ? <video src={videoSources.webm} controls>...</video>
+          : <video src={videoSources.mp4}  controls>...</video>
+      }
+      {
+        mediaCapabilities.showWarning &&
+          <div class="muted">
+            Defaulted to mp4.
+            Couldn't test webm support, either the media capabilities api is unavailable or no media configuration was given.
+          </div>
+      }
+    </div>
+  );
+};
+```
+
+This hook accepts a [media configuration](https://developer.mozilla.org/en-US/docs/Web/API/MediaConfiguration) object argument and an optional `initialMediaCapabilities` object argument, which can be used to provide a `mediaCapabilities` state value when the user's browser does not support the relevant [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) or no media configuration was given.
+
 ### Adaptive Code-loading & Code-splitting
 
 #### Code-loading
@@ -257,6 +307,8 @@ export default App;
 * [Performance memory API](https://developer.mozilla.org/en-US/docs/Web/API/Performance) is a non-standard and only available in [Chrome 7+, Opera, Chrome for Android 18+, Opera for Android](https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory)
 
 * [Device Memory API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory) is available in [Chrome 63+, Opera 50+, Chrome for Android 76+, Opera for Android 46+](https://caniuse.com/#search=deviceMemory)
+
+* [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) is available in [Chrome 63+, Firefox 63+, Opera 55+, Chrome for Android 78+, Firefox for Android 68+](https://caniuse.com/#search=media%20capabilities)
 
 ## Demos
 
