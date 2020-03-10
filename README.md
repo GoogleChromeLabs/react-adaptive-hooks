@@ -246,13 +246,13 @@ const App = () => {
 export default App;
 ```
 
-## Notes
+## Server-side rendering support
 
-The build version of this package is ESM by default but it's not supported on Server Side for now. So when we're using this package on universal app like Next.js app with server side rendering, we need to  
+The built version of this package using ESM (ECMAScript Modules) by default, but is not supported on the server-side. When we are using this package in a universal meta-framework like Next.js with server-rendering, we need to:  
 
-* transpile the package by directly configuring babel or installing some plugin like [next-transpile-modules](https://github.com/martpie/next-transpile-modules). ([example project](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading))
+* Transpile the package by directly configuring babel or installing [next-transpile-modules](https://github.com/martpie/next-transpile-modules). ([example project](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading))
 
-* use UMD build like in the following code-snippet. ([example project](https://glitch.com/edit/#!/anton-karlovskiy-next-show-adaptive-loading?path=utils/hooks.js:19:91))
+* Use a UMD build as in the following code-snippet: ([example project](https://glitch.com/edit/#!/anton-karlovskiy-next-show-adaptive-loading?path=utils/hooks.js:19:91))
 ```
 import { useNetworkStatus, useSaveData, useHardwareConcurrency, useMemoryStatus } from 'react-adaptive-hooks/dist/index.umd.js';
 ```
