@@ -248,9 +248,9 @@ export default App;
 
 ## Server-side rendering support
 
-The built version of this package using ESM (ECMAScript Modules) by default, but is not supported on the server-side. When we are using this package in a universal meta-framework like Next.js with server-rendering, we need to:  
+The built version of this package uses ESM (native JS modules) by default, but is not supported on the server-side. When using this package in a web framework like Next.js with server-rendering, we recommend you
 
-* Transpile the package by directly configuring babel or installing [next-transpile-modules](https://github.com/martpie/next-transpile-modules). ([example project](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading))
+* Transpile the package by installing [next-transpile-modules](https://github.com/martpie/next-transpile-modules). ([example project](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading)). This is because Next.js currently does not pass `node_modules` into webpack server-side.
 
 * Use a UMD build as in the following code-snippet: ([example project](https://glitch.com/edit/#!/anton-karlovskiy-next-show-adaptive-loading?path=utils/hooks.js:19:91))
 ```
