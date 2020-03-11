@@ -170,35 +170,35 @@ import React from 'react';
 import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
 
 const webmMediaConfig = {
-  type : 'file', // 'record', 'transmission', or 'media-source'
-  video : {
-    contentType : 'video/webm;codecs=vp8', // valid content type
-    width : 800,     // width of the video
-    height : 600,    // height of the video
-    bitrate : 10000, // number of bits used to encode 1s of video
-    framerate : 30   // number of frames making up that 1s.
+  type: 'file', // 'record', 'transmission', or 'media-source'
+  video: {
+    contentType: 'video/webm;codecs=vp8', // valid content type
+    width: 800, // width of the video
+    height: 600, // height of the video
+    bitrate: 10000, // number of bits used to encode 1s of video
+    framerate: 30 // number of frames making up that 1s.
   }
 };
 
-const initialDecodingInfo = { showWarning: true }
+const initialDecodingInfo = {showWarning: true};
 
 const MyComponent = ({ videoSources }) => {
   const { mediaCapabilities } = useMediaCapabilities(webmMediaConfig, initialDecodingInfo);
 
   return (
     <div>
-      {
-        mediaCapabilities.supported
-          ? <video src={videoSources.webm} controls>...</video>
-          : <video src={videoSources.mp4}  controls>...</video>
-      }
-      {
-        mediaCapabilities.showWarning &&
-          <div class="muted">
-            Defaulted to mp4.
-            Couldn't test webm support, either the media capabilities api is unavailable or no media configuration was given.
-          </div>
-      }
+      { mediaCapabilities.supported ? (
+        <video src={videoSources.webm} controls>...</video>
+      ) : (
+        <video src={videoSources.mp4} controls>...</video>
+      ) }
+      { mediaCapabilities.showWarning && (
+        <div class='muted'>
+          Defaulted to mp4.  
+          Couldn't test webm support,  
+          either the media capabilities api is unavailable or no media configuration was given.
+        </div>
+      ) }
     </div>
   );
 };
@@ -304,7 +304,12 @@ The built version of this package uses ESM (native JS modules) by default, but i
 
 * Use a UMD build as in the following code-snippet: ([example project](https://glitch.com/edit/#!/anton-karlovskiy-next-show-adaptive-loading?path=utils/hooks.js:19:91))
 ```
-import { useNetworkStatus, useSaveData, useHardwareConcurrency, useMemoryStatus } from 'react-adaptive-hooks/dist/index.umd.js';
+import {
+  useNetworkStatus,
+  useSaveData,
+  useHardwareConcurrency,
+  useMemoryStatus
+} from 'react-adaptive-hooks/dist/index.umd.js';
 ```
 
 ## Browser Support
