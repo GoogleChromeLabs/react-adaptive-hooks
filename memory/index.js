@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-const useMemoryStatus = (initialMemoryStatus = null) => {
-  const supported = (typeof navigator !== 'undefined' && 'deviceMemory' in navigator)
-  const performanceMemory = (typeof performance !== 'undefined' && 'memory' in performance) ? performance.memory : {};
+const supported = (typeof navigator !== 'undefined' && 'deviceMemory' in navigator);
+const performanceMemory = (typeof performance !== 'undefined' && 'memory' in performance) ? performance.memory : {};
 
-  const memoryStatus = supported ? {
-    deviceMemory: navigator.deviceMemory,
-    totalJSHeapSize: performanceMemory.totalJSHeapSize || null,
-    usedJSHeapSize: performanceMemory.usedJSHeapSize || null,
-    jsHeapSizeLimit: performanceMemory.jsHeapSizeLimit || null
-  } : initialMemoryStatus;
+const useMemoryStatus = (initialMemoryStatus = null) => {
+  const memoryStatus = supported 
+    ? {
+      deviceMemory: navigator.deviceMemory,
+      totalJSHeapSize: performanceMemory.totalJSHeapSize || null,
+      usedJSHeapSize: performanceMemory.usedJSHeapSize || null,
+      jsHeapSizeLimit: performanceMemory.jsHeapSizeLimit || null
+    } 
+    : initialMemoryStatus;
 
   return {
-    unsupported: !supported,
+    supported,
     ...memoryStatus
   }
 };

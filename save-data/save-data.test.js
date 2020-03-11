@@ -16,17 +16,17 @@
 
 import { renderHook, act } from '@testing-library/react-hooks';
 
-afterEach(function() {
+afterEach(() => {
   // Reload hook for every test
   jest.resetModules();
 });
 
 describe('useSaveData', () => {
-  test(`should return "true" for unsupported case`, () => {
+  test(`should return "false" for unsupported case`, () => {
     const { useSaveData } = require('./');
     const { result } = renderHook(() => useSaveData());
 
-    expect(result.current.unsupported).toBe(true);
+    expect(result.current.supported).toBe(false);
     expect(result.current.saveData).toEqual(null);
   });
 
@@ -35,7 +35,7 @@ describe('useSaveData', () => {
     const { useSaveData } = require('./');
     const { result } = renderHook(() => useSaveData(initialSaveDataStatus));
 
-    expect(result.current.unsupported).toBe(true);
+    expect(result.current.supported).toBe(false);
     expect(result.current.saveData).toBe(initialSaveDataStatus);
   });
 
@@ -46,7 +46,7 @@ describe('useSaveData', () => {
     const { useSaveData } = require('./');
     const { result } = renderHook(() => useSaveData());
 
-    expect(result.current.unsupported).toBe(false);
+    expect(result.current.supported).toBe(true);
     expect(result.current.saveData).toEqual(navigator.connection.saveData);
   });
 
@@ -57,7 +57,7 @@ describe('useSaveData', () => {
     const { useSaveData } = require('./');
     const { result } = renderHook(() => useSaveData());
 
-    expect(result.current.unsupported).toBe(false);
+    expect(result.current.supported).toBe(true);
     expect(result.current.saveData).toEqual(navigator.connection.saveData);
   });
 
@@ -69,7 +69,7 @@ describe('useSaveData', () => {
     const { useSaveData } = require('./');
     const { result } = renderHook(() => useSaveData(initialSaveDataStatus));
 
-    expect(result.current.unsupported).toBe(false);
+    expect(result.current.supported).toBe(true);
     expect(result.current.saveData).toEqual(navigator.connection.saveData);
   });
 });

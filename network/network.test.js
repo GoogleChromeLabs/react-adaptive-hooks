@@ -42,10 +42,10 @@ describe('useNetworkStatus', () => {
     expect(method.mock.calls[0][1].constructor).toEqual(Function);
   };
 
-  test(`should return "true" for unsupported case`, () => {
+  test(`should return "false" for unsupported case`, () => {
     const { result } = renderHook(() => useNetworkStatus());
 
-    expect(result.current.unsupported).toBe(true);
+    expect(result.current.supported).toBe(false);
   });
 
   test('should return initialEffectiveConnectionType for unsupported case', () => {
@@ -55,7 +55,7 @@ describe('useNetworkStatus', () => {
       useNetworkStatus(initialEffectiveConnectionType)
     );
 
-    expect(result.current.unsupported).toBe(true);
+    expect(result.current.supported).toBe(false);
     expect(result.current.effectiveConnectionType).toBe(
       initialEffectiveConnectionType
     );
@@ -70,7 +70,7 @@ describe('useNetworkStatus', () => {
     const { result } = renderHook(() => useNetworkStatus());
 
     testEctStatusEventListenerMethod(ectStatusListeners.addEventListener);
-    expect(result.current.unsupported).toBe(false);
+    expect(result.current.supported).toBe(true);
     expect(result.current.effectiveConnectionType).toEqual('4g');
   });
 
@@ -86,7 +86,7 @@ describe('useNetworkStatus', () => {
     );
 
     testEctStatusEventListenerMethod(ectStatusListeners.addEventListener);
-    expect(result.current.unsupported).toBe(false);
+    expect(result.current.supported).toBe(true);
     expect(result.current.effectiveConnectionType).toEqual('4g');
   });
 

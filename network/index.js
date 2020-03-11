@@ -20,7 +20,7 @@ const useNetworkStatus = (initialEffectiveConnectionType = null) => {
   const supported = (typeof navigator !== 'undefined' && 'connection' in navigator && 'effectiveType' in navigator.connection)
 
   const initialNetworkStatus = {
-    unsupported: !supported,
+    supported,
     effectiveConnectionType: supported
       ? navigator.connection.effectiveType
       : initialEffectiveConnectionType
