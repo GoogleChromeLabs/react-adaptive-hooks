@@ -16,8 +16,6 @@
 
 import { renderHook } from '@testing-library/react-hooks';
 
-import { useMediaCapabilities } from './';
-
 const mediaConfig = {
   type: 'file',
   audio: {
@@ -36,14 +34,27 @@ const mediaCapabilitiesMapper = {
   }
 };
 
+afterEach(function() {
+  // Reload hook for every test
+  jest.resetModules();
+});
+
 describe('useMediaCapabilities', () => {
+  const navigator = window.navigator;
+
+  afterEach(() => {
+    if (!window.navigator) window.navigator = navigator;
+  });
+
   test('should return supported flag on unsupported platforms', () => {
+    const { useMediaCapabilities } = require('./');
     const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
 
     expect(result.current.mediaCapabilities).toEqual({hasMediaConfig: true, supported: false});
   });
 
   test('should return supported and hasMediaConfig flags on unsupported platforms and no config given', () => {
+    const { useMediaCapabilities } = require('./');
     const { result } = renderHook(() => useMediaCapabilities());
     
     expect(result.current.mediaCapabilities).toEqual({hasMediaConfig: false, supported: false});
@@ -55,7 +66,7 @@ describe('useMediaCapabilities', () => {
       smooth: false,
       powerEfficient: true
     };
-
+    const { useMediaCapabilities } = require('./');
     const { result } = renderHook(() => useMediaCapabilities(mediaConfig, initialMediaCapabilities));
 
     expect(result.current.mediaCapabilities.supported).toBe(true);
@@ -69,7 +80,7 @@ describe('useMediaCapabilities', () => {
       configurable: true,
       writable: true
     });
-
+    const { useMediaCapabilities } = require('./');
     const { result } = renderHook(() => useMediaCapabilities());
     
     expect(result.current.mediaCapabilities).toEqual({hasMediaConfig: false, supported: true});
@@ -83,7 +94,7 @@ describe('useMediaCapabilities', () => {
       configurable: true,
       writable: true
     });
-
+    const { useMediaCapabilities } = require('./');
     const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
 
     expect(result.current.mediaCapabilities).toEqual({

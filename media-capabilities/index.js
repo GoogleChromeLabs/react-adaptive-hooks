@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+const supported = typeof window !== 'undefined' && 'mediaCapabilities' in navigator;
+
 const useMediaCapabilities = (mediaConfig, initialMediaCapabilities = {}) => {
   let mediaCapabilities = {
-    supported: typeof window !== 'undefined' && 'mediaCapabilities' in navigator,
+    supported,
     hasMediaConfig: !!mediaConfig
   };
 
