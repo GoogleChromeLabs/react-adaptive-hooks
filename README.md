@@ -8,6 +8,7 @@ This is a suite of [React Hooks](https://reactjs.org/docs/hooks-overview.html) a
 * [Data Saver preferences](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/saveData)
 * [Device memory](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory)
 * [Logical CPU cores](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency)
+* [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API)
 
 It can be used to add patterns for adaptive resource loading, data-fetching, code-splitting and capability toggling.
 
@@ -28,6 +29,7 @@ import { useNetworkStatus } from 'react-adaptive-hooks/network';
 import { useSaveData } from 'react-adaptive-hooks/save-data';
 import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
 import { useMemoryStatus } from 'react-adaptive-hooks/memory';
+import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
 ```
 
 and then use them in your components. Examples for each hook and utility can be found below:
@@ -156,6 +158,54 @@ const initialMemoryStatus = { deviceMemory: 4 };
 const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 ```
 
+### Media Capabilities
+
+`useMediaCapabilities` utility for adapting based on the user's device media capabilities.
+
+**Use case:** this hook can be used to check if we can play a certain content type. For example, Safari does not support WebM so we want to fallback to MP4 but if Safari at some point does support WebM it will automatically load WebM videos.
+
+```js
+import React from 'react';
+
+import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
+
+const webmMediaConfig = {
+  type : 'file', // 'record', 'transmission', or 'media-source'
+  video : {
+    contentType : 'video/webm;codecs=vp8', // valid content type
+    width : 800,     // width of the video
+    height : 600,    // height of the video
+    bitrate : 10000, // number of bits used to encode 1s of video
+    framerate : 30   // number of frames making up that 1s.
+  }
+};
+
+const initialDecodingInfo = { showWarning: true }
+
+const MyComponent = ({ videoSources }) => {
+  const { mediaCapabilities } = useMediaCapabilities(webmMediaConfig, initialDecodingInfo);
+
+  return (
+    <div>
+      {
+        mediaCapabilities.supported
+          ? <video src={videoSources.webm} controls>...</video>
+          : <video src={videoSources.mp4}  controls>...</video>
+      }
+      {
+        mediaCapabilities.showWarning &&
+          <div class="muted">
+            Defaulted to mp4.
+            Couldn't test webm support, either the media capabilities api is unavailable or no media configuration was given.
+          </div>
+      }
+    </div>
+  );
+};
+```
+
+This hook accepts a [media configuration](https://developer.mozilla.org/en-US/docs/Web/API/MediaConfiguration) object argument and an optional `initialMediaCapabilities` object argument, which can be used to provide a `mediaCapabilities` state value when the user's browser does not support the relevant [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) or no media configuration was given.
+
 ### Adaptive Code-loading & Code-splitting
 
 #### Code-loading
@@ -246,6 +296,17 @@ const App = () => {
 export default App;
 ```
 
+## Server-side rendering support
+
+The built version of this package uses ESM (native JS modules) by default, but is not supported on the server-side. When using this package in a web framework like Next.js with server-rendering, we recommend you
+
+* Transpile the package by installing [next-transpile-modules](https://github.com/martpie/next-transpile-modules). ([example project](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading)). This is because Next.js currently does not pass `node_modules` into webpack server-side.
+
+* Use a UMD build as in the following code-snippet: ([example project](https://glitch.com/edit/#!/anton-karlovskiy-next-show-adaptive-loading?path=utils/hooks.js:19:91))
+```
+import { useNetworkStatus, useSaveData, useHardwareConcurrency, useMemoryStatus } from 'react-adaptive-hooks/dist/index.umd.js';
+```
+
 ## Browser Support
 
 * [Network Information API - effectiveType](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation/effectiveType) is available in [Chrome 61+, Opera 48+, Edge 76+, Chrome for Android 76+, Firefox for Android 68+](https://caniuse.com/#search=effectiveType)
@@ -257,6 +318,8 @@ export default App;
 * [Performance memory API](https://developer.mozilla.org/en-US/docs/Web/API/Performance) is a non-standard and only available in [Chrome 7+, Opera, Chrome for Android 18+, Opera for Android](https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory)
 
 * [Device Memory API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory) is available in [Chrome 63+, Opera 50+, Chrome for Android 76+, Opera for Android 46+](https://caniuse.com/#search=deviceMemory)
+
+* [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) is available in [Chrome 63+, Firefox 63+, Opera 55+, Chrome for Android 78+, Firefox for Android 68+](https://caniuse.com/#search=media%20capabilities)
 
 ## Demos
 
@@ -292,7 +355,7 @@ export default App;
 ### Hybrid
 
 * [React Youtube - adaptive loading with mix of network, memory and hardware concurrency](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/react-youtube-adaptive-loading) ([Live](https://adaptive-loading.web.app/react-youtube-adaptive-loading/))
-
+* [Next Show - adaptive loading with mix of network, memory and Client Hints](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading) ([demo](https://adaptive-loading.web.app/next-show-adaptive-loading/))
 
 ## References
 
