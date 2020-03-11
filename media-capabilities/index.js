@@ -15,21 +15,21 @@
  */
 
 const useMediaCapabilities = (mediaConfig, initialMediaCapabilities = {}) => {
-    let mediaCapabilities = {
-        supported: typeof window !== 'undefined' && 'mediaCapabilities' in navigator,
-        hasMediaConfig: !!mediaConfig
-    }
+  let mediaCapabilities = {
+    supported: typeof window !== 'undefined' && 'mediaCapabilities' in navigator,
+    hasMediaConfig: !!mediaConfig
+  };
 
-    mediaCapabilities = (mediaCapabilities.supported && mediaCapabilities.hasMediaConfig) ?
-        navigator.mediaCapabilities.decodingInfo(mediaConfig) :
-        {
-            ...mediaCapabilities,
-            ...initialMediaCapabilities
-        }
+  mediaCapabilities = (mediaCapabilities.supported && mediaCapabilities.hasMediaConfig)
+    ? navigator.mediaCapabilities.decodingInfo(mediaConfig)
+    : {
+      ...mediaCapabilities,
+      ...initialMediaCapabilities
+    };
 
-    return { mediaCapabilities };
+  return {mediaCapabilities};
 };
 
 export {
-    useMediaCapabilities
+  useMediaCapabilities
 };

@@ -180,10 +180,10 @@ const webmMediaConfig = {
   }
 };
 
-const initialDecodingInfo = {showWarning: true};
+const initialMediaCapabilities = {showWarning: true};
 
 const MyComponent = ({ videoSources }) => {
-  const { mediaCapabilities } = useMediaCapabilities(webmMediaConfig, initialDecodingInfo);
+  const { mediaCapabilities } = useMediaCapabilities(webmMediaConfig, initialMediaCapabilities);
 
   return (
     <div>
