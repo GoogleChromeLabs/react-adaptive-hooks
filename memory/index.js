@@ -15,9 +15,10 @@
  */
 
 const supported = (typeof navigator !== 'undefined' && 'deviceMemory' in navigator);
-const performanceMemory = (typeof performance !== 'undefined' && 'memory' in performance) ? performance.memory : {};
 
 const useMemoryStatus = (initialMemoryStatus = null) => {
+  const performanceMemory = (typeof performance !== 'undefined' && 'memory' in performance) ? performance.memory : {};
+
   const memoryStatus = supported 
     ? {
       deviceMemory: navigator.deviceMemory,
