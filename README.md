@@ -187,11 +187,7 @@ const MyComponent = ({ videoSources }) => {
 
   return (
     <div>
-      { mediaCapabilities.supported ? (
-        <video src={videoSources.webm} controls>...</video>
-      ) : (
-        <video src={videoSources.mp4} controls>...</video>
-      ) }
+      <video src={mediaCapabilities.supported ? videoSources.webm : videoSources.mp4} controls>...</video>
       { mediaCapabilities.showWarning && (
         <div class='muted'>
           Defaulted to mp4.  
