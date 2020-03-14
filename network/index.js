@@ -16,9 +16,9 @@
 
 import { useState, useEffect } from 'react';
 
-const supported = (typeof navigator !== 'undefined' && 'connection' in navigator && 'effectiveType' in navigator.connection)
-
 const useNetworkStatus = (initialEffectiveConnectionType = null) => {
+  const supported = (typeof navigator !== 'undefined' && 'connection' in navigator && 'effectiveType' in navigator.connection)
+
   const initialNetworkStatus = {
     supported,
     effectiveConnectionType: supported
