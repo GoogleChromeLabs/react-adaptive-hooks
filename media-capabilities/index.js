@@ -13,25 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { useState, useEffect } from 'react';
 
 const supported = typeof window !== 'undefined' && 'mediaCapabilities' in navigator;
 
 const useMediaCapabilities = (mediaConfig, initialMediaCapabilities = {}) => {
-  let mediaCapabilities = {
+  initialMediaCapabilities = {
     supported,
-    hasMediaConfig: !!mediaConfig
+    ...initialMediaCapabilities
   };
 
-  mediaCapabilities = (mediaCapabilities.supported && mediaCapabilities.hasMediaConfig)
-    ? navigator.mediaCapabilities.decodingInfo(mediaConfig)
-    : {
-      ...mediaCapabilities,
-      ...initialMediaCapabilities
-    };
+  const [mediaCapabilities, setMediaCapabilities] = useState(initialMediaCapabilities);
 
-  return {mediaCapabilities};
+  const updateMediaCapabilities = mediaCapabilities => {
+    setMediaCapabilities(mediaCapabilities);
+  };
+
+  useEffect(() => {
+    if (supported && !!mediaConfig) {
+      navigator
+        .mediaCapabilities
+        .decodingInfo(mediaConfig)
+        .then(updateMediaCapabilities);
+    }
+  })
+
+  return {
+    ...mediaCapabilities,
+    updateMediaCapabilities
+  };
 };
 
-export {
-  useMediaCapabilities
-};
+export { useMediaCapabilities };
