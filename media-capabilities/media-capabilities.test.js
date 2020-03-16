@@ -86,7 +86,7 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
     expect(result.current.mediaCapabilitiesInfo).toEqual({hasMediaDecodingConfig: false, supported: true});
   });
   
-  test('should return MediaCapabilitiesInfo for given media decoding configuration', () => {
+  test('should return MediaCapabilitiesInfo for given media configuration', () => {
     Object.defineProperty(window.navigator, 'mediaCapabilities', {
       value: {
         decodingInfo: mediaDecodingConfig => mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]

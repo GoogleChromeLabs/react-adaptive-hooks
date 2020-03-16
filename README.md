@@ -200,6 +200,8 @@ const MyComponent = ({ videoSources }) => {
 };
 ```
 
+`mediaCapabilitiesInfo` value contains the three Boolean properties `supported`, `smooth`, and `powerefficient`, which describe whether decoding the media described would be supported, smooth, and powerefficient.
+
 This utility accepts a [MediaDecodingConfiguration](https://developer.mozilla.org/en-US/docs/Web/API/MediaDecodingConfiguration) object argument and an optional `initialMediaCapabilitiesInfo` object argument, which can be used to provide a `mediaCapabilitiesInfo` state value when the user's browser does not support the relevant [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) or no media configuration was given.
 
 ### Adaptive Code-loading & Code-splitting
