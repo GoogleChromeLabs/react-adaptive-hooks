@@ -16,7 +16,7 @@
 
 import { renderHook } from '@testing-library/react-hooks';
 
-const mediaConfig = {
+const mediaDecodingConfig = {
   type: 'file',
   audio: {
     contentType: 'audio/mp3',
@@ -39,7 +39,7 @@ afterEach(function() {
   jest.resetModules();
 });
 
-describe('useMediaCapabilities', () => {
+describe('useMediaCapabilitiesDecodingInfo', () => {
   const navigator = window.navigator;
 
   afterEach(() => {
@@ -47,57 +47,57 @@ describe('useMediaCapabilities', () => {
   });
 
   test('should return supported flag on unsupported platforms', () => {
-    const { useMediaCapabilities } = require('./');
-    const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
+    const { useMediaCapabilitiesDecodingInfo } = require('./');
+    const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
 
-    expect(result.current.mediaCapabilities).toEqual({hasMediaConfig: true, supported: false});
+    expect(result.current.mediaCapabilitiesInfo).toEqual({hasMediaDecodingConfig: true, supported: false});
   });
 
-  test('should return supported and hasMediaConfig flags on unsupported platforms and no config given', () => {
-    const { useMediaCapabilities } = require('./');
-    const { result } = renderHook(() => useMediaCapabilities());
+  test('should return supported and hasMediaDecodingConfig flags on unsupported platforms and no config given', () => {
+    const { useMediaCapabilitiesDecodingInfo } = require('./');
+    const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo());
     
-    expect(result.current.mediaCapabilities).toEqual({hasMediaConfig: false, supported: false});
+    expect(result.current.mediaCapabilitiesInfo).toEqual({hasMediaDecodingConfig: false, supported: false});
   });
 
-  test('should return initialMediaCapabilities for unsupported', () => {
-    const initialMediaCapabilities = {
+  test('should return initialMediaCapabilitiesInfo for unsupported', () => {
+    const initialMediaCapabilitiesInfo = {
       supported: true,
       smooth: false,
       powerEfficient: true
     };
-    const { useMediaCapabilities } = require('./');
-    const { result } = renderHook(() => useMediaCapabilities(mediaConfig, initialMediaCapabilities));
+    const { useMediaCapabilitiesDecodingInfo } = require('./');
+    const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig, initialMediaCapabilitiesInfo));
 
-    expect(result.current.mediaCapabilities.supported).toBe(true);
-    expect(result.current.mediaCapabilities.smooth).toEqual(false);
-    expect(result.current.mediaCapabilities.powerEfficient).toEqual(true);
+    expect(result.current.mediaCapabilitiesInfo.supported).toBe(true);
+    expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(false);
+    expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
   });
 
-  test('should return hasMediaConfig flag when no config given', () => {
+  test('should return hasMediaDecodingConfig flag when no config given', () => {
     Object.defineProperty(window.navigator, 'mediaCapabilities', {
       value: true,
       configurable: true,
       writable: true
     });
-    const { useMediaCapabilities } = require('./');
-    const { result } = renderHook(() => useMediaCapabilities());
+    const { useMediaCapabilitiesDecodingInfo } = require('./');
+    const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo());
     
-    expect(result.current.mediaCapabilities).toEqual({hasMediaConfig: false, supported: true});
+    expect(result.current.mediaCapabilitiesInfo).toEqual({hasMediaDecodingConfig: false, supported: true});
   });
   
-  test('should return MediaDecodingConfiguration for given media configuration', () => {
+  test('should return MediaCapabilitiesInfo for given media decoding configuration', () => {
     Object.defineProperty(window.navigator, 'mediaCapabilities', {
       value: {
-        decodingInfo: mediaConfig => mediaCapabilitiesMapper[mediaConfig.audio.contentType]
+        decodingInfo: mediaDecodingConfig => mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]
       },
       configurable: true,
       writable: true
     });
-    const { useMediaCapabilities } = require('./');
-    const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
+    const { useMediaCapabilitiesDecodingInfo } = require('./');
+    const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
 
-    expect(result.current.mediaCapabilities).toEqual({
+    expect(result.current.mediaCapabilitiesInfo).toEqual({
       powerEfficient: true,
       smooth: true,
       supported: true
