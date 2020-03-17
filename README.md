@@ -100,12 +100,12 @@ const MyComponent = () => {
 
 `saveData` values can be `true` or `false`.
 
-This hook accepts an optional `initialSaveDataStatus` boolean argument, which can be used to provide a `saveData` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Save-Data Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) that has been converted to a boolean to detect the user's data saving preference.
+This hook accepts an optional `initialSaveData` boolean argument, which can be used to provide a `saveData` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Save-Data Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) that has been converted to a boolean to detect the user's data saving preference.
 
 ```js
 // Inside of a functional React component
-const initialSaveDataStatus = true;
-const { saveData } = useSaveData(initialSaveDataStatus);
+const initialSaveData = true;
+const { saveData } = useSaveData(initialSaveData);
 ```
 
 ### CPU Cores / Hardware Concurrency
