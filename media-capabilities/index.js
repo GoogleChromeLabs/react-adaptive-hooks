@@ -17,31 +17,28 @@ import { useState, useEffect } from 'react';
 
 const supported = typeof window !== 'undefined' && 'mediaCapabilities' in navigator;
 
-const useMediaCapabilities = (mediaConfig, initialMediaCapabilities = {}) => {
-  initialMediaCapabilities = {
+const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapabilitiesInfo = {}) => {
+  initialMediaCapabilitiesInfo = {
     supported,
-    ...initialMediaCapabilities
+    ...initialMediaCapabilitiesInfo
   };
 
-  const [mediaCapabilities, setMediaCapabilities] = useState(initialMediaCapabilities);
-
-  const updateMediaCapabilities = mediaCapabilities => {
-    setMediaCapabilities(mediaCapabilities);
-  };
+  const [mediaCapabilitiesInfo, setMediaCapabilitiesInfo] = useState(initialMediaCapabilitiesInfo);
 
   useEffect(() => {
-    if (supported && !!mediaConfig) {
-      navigator
-        .mediaCapabilities
-        .decodingInfo(mediaConfig)
-        .then(updateMediaCapabilities);
+    if (supported && !!mediaDecodingConfig) {
+      try {
+        navigator
+          .mediaCapabilities
+          .decodingInfo(mediaDecodingConfig)
+          .then(setMediaCapabilitiesInfo);
+      } catch (error) { 
+        console.error(error);
+      }
     }
   })
 
-  return {
-    ...mediaCapabilities,
-    updateMediaCapabilities
-  };
+  return { ...mediaCapabilitiesInfo };
 };
 
-export { useMediaCapabilities };
+export { useMediaCapabilitiesDecodingInfo };

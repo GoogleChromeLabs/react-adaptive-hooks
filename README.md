@@ -29,7 +29,7 @@ import { useNetworkStatus } from 'react-adaptive-hooks/network';
 import { useSaveData } from 'react-adaptive-hooks/save-data';
 import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
 import { useMemoryStatus } from 'react-adaptive-hooks/memory';
-import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
+import { useMediaCapabilitiesDecodingInfo } from 'react-adaptive-hooks/media-capabilities';
 ```
 
 and then use them in your components. Examples for each hook and utility can be found below:
@@ -160,16 +160,16 @@ const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 
 ### Media Capabilities
 
-`useMediaCapabilities` utility for adapting based on the user's device media capabilities.
+`useMediaCapabilitiesDecodingInfo` utility for adapting based on the user's device media capabilities.
 
 **Use case:** this hook can be used to check if we can play a certain content type. For example, Safari does not support WebM so we want to fallback to MP4 but if Safari at some point does support WebM it will automatically load WebM videos.
 
 ```js
 import React from 'react';
 
-import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
+import { useMediaCapabilitiesDecodingInfo } from 'react-adaptive-hooks/media-capabilities';
 
-const webmMediaConfig = {
+const webmMediaDecodingConfig = {
   type: 'file', // 'record', 'transmission', or 'media-source'
   video: {
     contentType: 'video/webm;codecs=vp8', // valid content type
@@ -180,15 +180,15 @@ const webmMediaConfig = {
   }
 };
 
-const initialMediaCapabilities = {showWarning: true};
+const initialMediaCapabilitiesInfo = { showWarning: true };
 
 const MyComponent = ({ videoSources }) => {
-  const { mediaCapabilities } = useMediaCapabilities(webmMediaConfig, initialMediaCapabilities);
+  const mediaCapabilitiesInfo = useMediaCapabilitiesDecodingInfo(webmMediaConfig, initialMediaCapabilities);
 
   return (
     <div>
-      <video src={mediaCapabilities.supported ? videoSources.webm : videoSources.mp4} controls>...</video>
-      { mediaCapabilities.showWarning && (
+      <video src={mediaCapabilitiesInfo.supported ? videoSources.webm : videoSources.mp4} controls>...</video>
+      { mediaCapabilitiesInfo.showWarning && (
         <div class='muted'>
           Defaulted to mp4.  
           Couldn't test webm support,  
@@ -200,7 +200,9 @@ const MyComponent = ({ videoSources }) => {
 };
 ```
 
-This hook accepts a [media configuration](https://developer.mozilla.org/en-US/docs/Web/API/MediaConfiguration) object argument and an optional `initialMediaCapabilities` object argument, which can be used to provide a `mediaCapabilities` state value when the user's browser does not support the relevant [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) or no media configuration was given.
+`useMediaCapabilitiesDecodingInfo` returns three Boolean properties `supported`, `smooth`, and `powerefficient`, which describe whether decoding the media described would be supported, smooth, and powerefficient.
+
+This utility accepts a [MediaDecodingConfiguration](https://developer.mozilla.org/en-US/docs/Web/API/MediaDecodingConfiguration) object argument and an optional `initialMediaCapabilitiesInfo` object argument, which can be used to provide a `mediaCapabilitiesInfo` state value when the user's browser does not support the relevant [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) or no media configuration was given.
 
 ### Adaptive Code-loading & Code-splitting
 
@@ -304,7 +306,8 @@ import {
   useNetworkStatus,
   useSaveData,
   useHardwareConcurrency,
-  useMemoryStatus
+  useMemoryStatus,
+  useMediaCapabilitiesDecodingInfo
 } from 'react-adaptive-hooks/dist/index.umd.js';
 ```
 
