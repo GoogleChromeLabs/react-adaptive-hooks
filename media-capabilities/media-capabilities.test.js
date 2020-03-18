@@ -92,8 +92,6 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
       const { useMediaCapabilitiesDecodingInfo } = require('.');
       const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
 
-      act(() => {})
-
       waitForNextUpdate().then(() => {
         expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
         expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(true);
