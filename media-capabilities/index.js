@@ -19,7 +19,6 @@ const supported = typeof window !== 'undefined' && 'mediaCapabilities' in naviga
 
 const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapabilitiesInfo = {}) => {
   initialMediaCapabilitiesInfo = {
-    supported,
     ...initialMediaCapabilitiesInfo
   };
 
@@ -34,7 +33,7 @@ const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapab
       .catch(error => console.error(error));
   })
 
-  return { ...mediaCapabilitiesInfo };
+  return { supported, mediaCapabilitiesInfo };
 };
 
 export { useMediaCapabilitiesDecodingInfo };

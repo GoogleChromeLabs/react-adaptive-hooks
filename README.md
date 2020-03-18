@@ -183,7 +183,7 @@ const webmMediaDecodingConfig = {
 const initialMediaCapabilitiesInfo = { powerEfficient: true };
 
 const MyComponent = ({ videoSources }) => {
-  const mediaCapabilitiesInfo = useMediaCapabilitiesDecodingInfo(webmMediaDecodingConfig, initialMediaCapabilitiesInfo);
+  const { mediaCapabilitiesInfo } = useMediaCapabilitiesDecodingInfo(webmMediaDecodingConfig, initialMediaCapabilitiesInfo);
 
   return (
     <div>

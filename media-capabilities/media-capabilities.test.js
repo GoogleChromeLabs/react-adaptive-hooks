@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 
 const mediaDecodingConfig = {
   type: 'file',
@@ -64,21 +64,21 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
       const { useMediaCapabilitiesDecodingInfo } = require('.');
       const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig, initialMediaCapabilitiesInfo));
       
-      expect(result.current.supported).toBe(true);
-      expect(result.current.smooth).toEqual(false);
-      expect(result.current.powerEfficient).toEqual(true);
+      expect(result.current.mediaCapabilitiesInfo.supported).toBe(true);
+      expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(false);
+      expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
     });
   });
 
   test('should return supported flag when no config given', () => {
     jest.isolateModules(() => {
       global.navigator.mediaCapabilities = {
-        decodingInfo: (mediaDecodingConfig) => new Promise(resolve => resolve(mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]))
+        decodingInfo: () => new Promise(resolve => resolve(true))
       };
 
       const { useMediaCapabilitiesDecodingInfo } = require('.');
       const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo());
-      
+
       expect(result.current.supported).toEqual(true);
     });
   });
@@ -86,16 +86,18 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
   test('should return mediaCapabilitiesInfo for given media configuration', () => {
     jest.isolateModules(() => {
       global.navigator.mediaCapabilities = {
-        decodingInfo: (mediaDecodingConfig) => new Promise(resolve => resolve(mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]))
+        decodingInfo: () => new Promise(resolve => resolve(mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]))
       };
-      
+
       const { useMediaCapabilitiesDecodingInfo } = require('.');
       const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
-      
+
+      act(() => {})
+
       waitForNextUpdate().then(() => {
-        expect(result.current.powerEfficient).toEqual(true);
-        expect(result.current.smooth).toEqual(true);
-        expect(result.current.supported).toEqual(true);
+        expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
+        expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(true);
+        expect(result.current.mediaCapabilitiesInfo.supported).toEqual(true);
       });
     });
   });
