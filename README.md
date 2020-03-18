@@ -306,7 +306,8 @@ import {
   useNetworkStatus,
   useSaveData,
   useHardwareConcurrency,
-  useMemoryStatus
+  useMemoryStatus,
+  useMediaCapabilitiesDecodingInfo
 } from 'react-adaptive-hooks/dist/index.umd.js';
 ```
 
