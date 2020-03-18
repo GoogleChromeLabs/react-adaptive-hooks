@@ -72,8 +72,10 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
 
   test('should return supported flag when no config given', () => {
     jest.isolateModules(() => {
-      global.navigator.mediaCapabilities = true;
-      
+      global.navigator.mediaCapabilities = {
+        decodingInfo: (mediaDecodingConfig) => new Promise(resolve => resolve(mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]))
+      };
+
       const { useMediaCapabilitiesDecodingInfo } = require('.');
       const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo());
       

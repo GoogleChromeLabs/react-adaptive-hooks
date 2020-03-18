@@ -26,16 +26,12 @@ const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapab
   const [mediaCapabilitiesInfo, setMediaCapabilitiesInfo] = useState(initialMediaCapabilitiesInfo);
 
   useEffect(() => {
-    if (supported && !!mediaDecodingConfig) {
-      try {
-        navigator
-          .mediaCapabilities
-          .decodingInfo(mediaDecodingConfig)
-          .then(setMediaCapabilitiesInfo);
-      } catch (error) { 
-        console.error(error);
-      }
-    }
+    supported &&
+    navigator
+      .mediaCapabilities
+      .decodingInfo(mediaDecodingConfig)
+      .then(setMediaCapabilitiesInfo)
+      .catch(error => console.error(error));
   })
 
   return { ...mediaCapabilitiesInfo };
