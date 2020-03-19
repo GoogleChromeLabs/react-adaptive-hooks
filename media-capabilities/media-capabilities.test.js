@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 
 const mediaDecodingConfig = {
   type: 'file',
@@ -60,26 +60,32 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
         smooth: false,
         powerEfficient: true
       };
-      
+
       const { useMediaCapabilitiesDecodingInfo } = require('.');
       const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig, initialMediaCapabilitiesInfo));
-      
+
       expect(result.current.mediaCapabilitiesInfo.supported).toBe(true);
       expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(false);
       expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
     });
   });
 
-  test('should return supported flag when no config given', () => {
+  test('should return supported flag when no config given', (done) => {
     jest.isolateModules(() => {
       global.navigator.mediaCapabilities = {
         decodingInfo: () => new Promise(resolve => resolve(true))
       };
 
       const { useMediaCapabilitiesDecodingInfo } = require('.');
-      const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo());
+      const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo());
 
-      expect(result.current.supported).toEqual(true);
+      waitForNextUpdate()
+        .then(() => {
+          expect(result.current.supported).toEqual(true);
+
+          done();
+        })
+        .catch(err => done(err));
     });
   });
 
