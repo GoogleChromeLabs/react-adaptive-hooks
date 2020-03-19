@@ -83,7 +83,7 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
     });
   });
 
-  test('should return mediaCapabilitiesInfo for given media configuration', () => {
+  test('should return mediaCapabilitiesInfo for given media configuration', (done) => {
     jest.isolateModules(() => {
       global.navigator.mediaCapabilities = {
         decodingInfo: () => new Promise(resolve => resolve(mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]))
@@ -92,11 +92,15 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
       const { useMediaCapabilitiesDecodingInfo } = require('.');
       const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
 
-      waitForNextUpdate().then(() => {
-        expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
-        expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(true);
-        expect(result.current.mediaCapabilitiesInfo.supported).toEqual(true);
-      });
+      waitForNextUpdate()
+        .then(() => {
+          expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
+          expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(true);
+          expect(result.current.mediaCapabilitiesInfo.supported).toEqual(true);
+
+          done();
+        })
+        .catch(err => done(err));
     });
   });
 });
