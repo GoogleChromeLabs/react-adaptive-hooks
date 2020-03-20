@@ -31,7 +31,7 @@ const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapab
       .decodingInfo(mediaDecodingConfig)
       .then(setMediaCapabilitiesInfo)
       .catch(error => console.error(error));
-  }, []);
+  }, [supported, mediaDecodingConfig]);
 
   return { supported, mediaCapabilitiesInfo };
 };
