@@ -30,13 +30,13 @@ describe('useSaveData', () => {
     expect(result.current.saveData).toEqual(null);
   });
 
-  test('should return initialSaveDataStatus for unsupported case', () => {
-    const initialSaveDataStatus = true;
+  test('should return initialSaveData for unsupported case', () => {
+    const initialSaveData = true;
     const { useSaveData } = require('./');
-    const { result } = renderHook(() => useSaveData(initialSaveDataStatus));
+    const { result } = renderHook(() => useSaveData(initialSaveData));
 
     expect(result.current.unsupported).toBe(true);
-    expect(result.current.saveData).toBe(initialSaveDataStatus);
+    expect(result.current.saveData).toBe(initialSaveData);
   });
 
   test(`should return "true" for enabled save data`, () => {
@@ -61,13 +61,13 @@ describe('useSaveData', () => {
     expect(result.current.saveData).toEqual(navigator.connection.saveData);
   });
 
-  test('should not return initialSaveDataStatus for supported case', () => {
-    const initialSaveDataStatus = false;
+  test('should not return initialSaveData for supported case', () => {
+    const initialSaveData = false;
     global.navigator.connection = {
       saveData: true
     };
     const { useSaveData } = require('./');
-    const { result } = renderHook(() => useSaveData(initialSaveDataStatus));
+    const { result } = renderHook(() => useSaveData(initialSaveData));
 
     expect(result.current.unsupported).toBe(false);
     expect(result.current.saveData).toEqual(navigator.connection.saveData);

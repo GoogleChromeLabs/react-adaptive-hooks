@@ -16,7 +16,7 @@
 
 let unsupported;
 
-const useSaveData = (initialSaveDataStatus = null) => {
+const useSaveData = (initialSaveData = null) => {
   if (typeof navigator !== 'undefined' && 'connection' in navigator && 'saveData' in navigator.connection) {
     unsupported = false;
   } else {
@@ -26,7 +26,7 @@ const useSaveData = (initialSaveDataStatus = null) => {
   return {
     unsupported,
     saveData: unsupported
-      ? initialSaveDataStatus
+      ? initialSaveData
       : navigator.connection.saveData === true
   };
 };
