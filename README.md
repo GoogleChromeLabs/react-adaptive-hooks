@@ -29,7 +29,7 @@ import { useNetworkStatus } from 'react-adaptive-hooks/network';
 import { useSaveData } from 'react-adaptive-hooks/save-data';
 import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
 import { useMemoryStatus } from 'react-adaptive-hooks/memory';
-import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
+import { useMediaCapabilitiesDecodingInfo } from 'react-adaptive-hooks/media-capabilities';
 ```
 
 and then use them in your components. Examples for each hook and utility can be found below:
@@ -100,12 +100,12 @@ const MyComponent = () => {
 
 `saveData` values can be `true` or `false`.
 
-This hook accepts an optional `initialSaveDataStatus` boolean argument, which can be used to provide a `saveData` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Save-Data Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) that has been converted to a boolean to detect the user's data saving preference.
+This hook accepts an optional `initialSaveData` boolean argument, which can be used to provide a `saveData` state value when the user's browser does not support the relevant [NetworkInformation API](https://wicg.github.io/netinfo/). Passing an initial value can also prove useful for server-side rendering, where the developer can pass a server [Save-Data Client Hint](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/client-hints#save-data) that has been converted to a boolean to detect the user's data saving preference.
 
 ```js
 // Inside of a functional React component
-const initialSaveDataStatus = true;
-const { saveData } = useSaveData(initialSaveDataStatus);
+const initialSaveData = true;
+const { saveData } = useSaveData(initialSaveData);
 ```
 
 ### CPU Cores / Hardware Concurrency
@@ -160,16 +160,16 @@ const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 
 ### Media Capabilities
 
-`useMediaCapabilities` utility for adapting based on the user's device media capabilities.
+`useMediaCapabilitiesDecodingInfo` utility for adapting based on the user's device media capabilities.
 
 **Use case:** this hook can be used to check if we can play a certain content type. For example, Safari does not support WebM so we want to fallback to MP4 but if Safari at some point does support WebM it will automatically load WebM videos.
 
 ```js
 import React from 'react';
 
-import { useMediaCapabilities } from 'react-adaptive-hooks/media-capabilities';
+import { useMediaCapabilitiesDecodingInfo } from 'react-adaptive-hooks/media-capabilities';
 
-const webmMediaConfig = {
+const webmMediaDecodingConfig = {
   type: 'file', // 'record', 'transmission', or 'media-source'
   video: {
     contentType: 'video/webm;codecs=vp8', // valid content type
@@ -180,27 +180,22 @@ const webmMediaConfig = {
   }
 };
 
-const initialMediaCapabilities = {showWarning: true};
+const initialMediaCapabilitiesInfo = { powerEfficient: true };
 
 const MyComponent = ({ videoSources }) => {
-  const { mediaCapabilities } = useMediaCapabilities(webmMediaConfig, initialMediaCapabilities);
+  const { mediaCapabilitiesInfo } = useMediaCapabilitiesDecodingInfo(webmMediaDecodingConfig, initialMediaCapabilitiesInfo);
 
   return (
     <div>
-      <video src={mediaCapabilities.supported ? videoSources.webm : videoSources.mp4} controls>...</video>
-      { mediaCapabilities.showWarning && (
-        <div class='muted'>
-          Defaulted to mp4.  
-          Couldn't test webm support,  
-          either the media capabilities api is unavailable or no media configuration was given.
-        </div>
-      ) }
+      <video src={mediaCapabilitiesInfo.supported ? videoSources.webm : videoSources.mp4} controls>...</video>
     </div>
   );
 };
 ```
 
-This hook accepts a [media configuration](https://developer.mozilla.org/en-US/docs/Web/API/MediaConfiguration) object argument and an optional `initialMediaCapabilities` object argument, which can be used to provide a `mediaCapabilities` state value when the user's browser does not support the relevant [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) or no media configuration was given.
+`mediaCapabilitiesInfo` value contains the three Boolean properties supported, smooth, and powerEfficient, which describe whether decoding the media described would be supported, smooth, and powerEfficient.
+
+This utility accepts a [MediaDecodingConfiguration](https://developer.mozilla.org/en-US/docs/Web/API/MediaDecodingConfiguration) object argument and an optional `initialMediaCapabilitiesInfo` object argument, which can be used to provide a `mediaCapabilitiesInfo` state value when the user's browser does not support the relevant [Media Capabilities API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API) or no media configuration was given.
 
 ### Adaptive Code-loading & Code-splitting
 
@@ -304,7 +299,8 @@ import {
   useNetworkStatus,
   useSaveData,
   useHardwareConcurrency,
-  useMemoryStatus
+  useMemoryStatus,
+  useMediaCapabilitiesDecodingInfo
 } from 'react-adaptive-hooks/dist/index.umd.js';
 ```
 
