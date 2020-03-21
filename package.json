@@ -1,6 +1,6 @@
 {
   "name": "react-adaptive-hooks",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "Give users a great experience best suited to their device and network constraints",
   "repository": "https://github.com/GoogleChromeLabs/react-adaptive-hooks",
   "author": "Google Chrome",
@@ -26,7 +26,6 @@
     "jest": "^24.8.0",
     "microbundle": "0.11.0",
     "react": "16.9.0",
-    "react-dom": "16.9.0",
     "react-test-renderer": "16.9.0"
   },
   "keywords": [

@@ -16,12 +16,12 @@
 
 const supported = (typeof navigator !== 'undefined' && 'connection' in navigator && 'saveData' in navigator.connection);
 
-const useSaveData = (initialSaveDataStatus = null) => (
+const useSaveData = (initialSaveData = null) => (
   {
     supported,
-    saveData: supported 
+    saveData: supported
       ? !!navigator.connection.saveData
-      : initialSaveDataStatus
+      : initialSaveData
   }
 );
 

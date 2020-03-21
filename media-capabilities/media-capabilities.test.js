@@ -14,106 +14,99 @@
  * limitations under the License.
  */
 
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 
-const mediaConfig = {
-    type: 'file',
-    audio: {
-        contentType: 'audio/mp3',
-        channels: 2,
-        bitrate: 132700,
-        samplerate: 5200
-    }
+const mediaDecodingConfig = {
+  type: 'file',
+  audio: {
+    contentType: 'audio/mp3',
+    channels: 2,
+    bitrate: 132700,
+    samplerate: 5200
+  }
 };
 
 const mediaCapabilitiesMapper = {
-    'audio/mp3': {
-        powerEfficient: true,
-        smooth: true,
-        supported: true
-    }
-}
+  'audio/mp3': {
+    powerEfficient: true,
+    smooth: true,
+    supported: true
+  }
+};
 
-describe('useMediaCapabilities', () => {
-    test('should return supported flag on unsupported platforms', () => {
-        jest.isolateModules(() => {
-            const { useMediaCapabilities } = require('./');
-            const { result } = renderHook(() => useMediaCapabilities(mediaConfig));
-            
-            expect(result.current.supported).toEqual(false);
-        })
-    });
-    
-    test('should return supported and hasMediaConfig flags on unsupported platforms and no config given', () => {
-        jest.isolateModules(() => {
-            const { useMediaCapabilities } = require('./');
-            const { result } = renderHook(() => useMediaCapabilities());
-            
-            expect(result.current.supported).toEqual(false);
-        })
-    });
-    
-    test('should return initialMediaCapabilities for unsupported', () => {
-        jest.isolateModules(() => {
-            const initialMediaCapabilities = {
-                supported: true,
-                smooth: false,
-                powerEfficient: true
-            };
-            
-            const { useMediaCapabilities } = require('./');
-            const { result } = renderHook(() => useMediaCapabilities(mediaConfig, initialMediaCapabilities));
-            
-            expect(result.current.supported).toBe(true);
-            expect(result.current.smooth).toEqual(false);
-            expect(result.current.powerEfficient).toEqual(true);
-        });
-    });
-    
-    test('should return hasMediaConfig flag when no config given', () => {
-        jest.isolateModules(() => {
-            global.navigator.mediaCapabilities = true
-            
-            const { useMediaCapabilities } = require('./');
-            const { result } = renderHook(() => useMediaCapabilities());
-            
-            expect(result.current.supported).toEqual(true);
-        });
-    });
-    
-    test('should return MediaDecodingConfiguration for given media configuration', () => {
-        jest.isolateModules(() => {
-            global.navigator.mediaCapabilities = {
-                decodingInfo: (mediaConfig) => new Promise(resolve => resolve(mediaCapabilitiesMapper[mediaConfig.audio.contentType]))
-            };
-            
-            const { useMediaCapabilities } = require('./');
-            const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilities(mediaConfig));
+describe('useMediaCapabilitiesDecodingInfo', () => {
+  test('should return supported flag on unsupported platforms', () => {
+    jest.isolateModules(() => {
+      const { useMediaCapabilitiesDecodingInfo } = require('.');
+      const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
 
-            waitForNextUpdate().then(() => {
-                expect(result.current.powerEfficient).toEqual(true);
-                expect(result.current.smooth).toEqual(true);
-                expect(result.current.supported).toEqual(true);
-            });
-        });
-    });
-
-    test('should update the mediaCapabilities state', () => {
-        jest.isolateModules(() => {
-            const { useMediaCapabilities } = require('./');
-            const { result } = renderHook(() => useMediaCapabilities());
-            
-            const mockMediaCapabilitiesStatus = {
-                powerEfficient: false,
-                smooth: false,
-                supported: false
-            };
-            
-            act(() => result.current.updateMediaCapabilities(mockMediaCapabilitiesStatus));
-            
-            expect(result.current.powerEfficient).toEqual(mockMediaCapabilitiesStatus.powerEfficient);
-            expect(result.current.smooth).toEqual(mockMediaCapabilitiesStatus.smooth);
-            expect(result.current.supported).toEqual(mockMediaCapabilitiesStatus.supported);
-        });
+      expect(result.current.supported).toEqual(false);
     })
+  });
+
+  test('should return supported flag on unsupported platforms and no config given', () => {
+    jest.isolateModules(() => {
+      const { useMediaCapabilitiesDecodingInfo } = require('.');
+      const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo());
+      
+      expect(result.current.supported).toEqual(false);
+    })
+  });
+
+  test('should return initialMediaCapabilitiesInfo for unsupported', () => {
+    jest.isolateModules(() => {
+      const initialMediaCapabilitiesInfo = {
+        supported: true,
+        smooth: false,
+        powerEfficient: true
+      };
+
+      const { useMediaCapabilitiesDecodingInfo } = require('.');
+      const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig, initialMediaCapabilitiesInfo));
+
+      expect(result.current.mediaCapabilitiesInfo.supported).toBe(true);
+      expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(false);
+      expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
+    });
+  });
+
+  test('should return supported flag when no config given', (done) => {
+    jest.isolateModules(() => {
+      global.navigator.mediaCapabilities = {
+        decodingInfo: () => new Promise(resolve => resolve(true))
+      };
+
+      const { useMediaCapabilitiesDecodingInfo } = require('.');
+      const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo());
+
+      waitForNextUpdate()
+        .then(() => {
+          expect(result.current.supported).toEqual(true);
+
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
+
+  test('should return mediaCapabilitiesInfo for given media configuration', (done) => {
+    jest.isolateModules(() => {
+      global.navigator.mediaCapabilities = {
+        decodingInfo: () => new Promise(resolve => resolve(mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]))
+      };
+
+      const { useMediaCapabilitiesDecodingInfo } = require('.');
+      const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
+
+      waitForNextUpdate()
+        .then(() => {
+          expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
+          expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(true);
+          expect(result.current.mediaCapabilitiesInfo.supported).toEqual(true);
+
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
 });
