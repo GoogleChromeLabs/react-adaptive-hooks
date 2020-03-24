@@ -34,18 +34,7 @@ const mediaCapabilitiesMapper = {
   }
 };
 
-// afterEach(function() {
-//   // Reload hook for every test
-//   jest.resetModules();
-// });
-
 describe('useMediaCapabilitiesDecodingInfo', () => {
-  // const navigator = window.navigator;
-
-  // afterEach(() => {
-  //   if (!window.navigator) window.navigator = navigator;
-  // });
-
   test('should return supported flag on unsupported platforms', () => {
     const { useMediaCapabilitiesDecodingInfo } = require('./');
     const { result } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
@@ -75,65 +64,53 @@ describe('useMediaCapabilitiesDecodingInfo', () => {
     expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
   });
 
-  // test('should return supported flag when no config given', async () => {
-  //   const originalError = console.error;
-  //   console.error = jest.fn();
+  test('should return supported flag when no config given', async () => {
+    const originalError = console.error;
+    console.error = jest.fn();
 
-  //   const mockDecodingInfo = jest.fn().mockImplementation(() => Promise.resolve({
-  //     supported: true
-  //   }));
+    const mockDecodingInfo = jest.fn().mockImplementation(() => Promise.resolve({
+      supported: true
+    }));
 
-  //   // global.navigator.mediaCapabilities = {
-  //   //   decodingInfo: mockDecodingInfo
-  //   // };
+    global.navigator.mediaCapabilities = {
+      decodingInfo: mockDecodingInfo
+    };
 
-  //   Object.defineProperty(window.navigator, 'mediaCapabilities', {
-  //     value: {decodingInfo: mockDecodingInfo},
-  //     configurable: true,
-  //     writable: true
-  //   });
+    const { useMediaCapabilitiesDecodingInfo } = require('./');
 
-  //   const { useMediaCapabilitiesDecodingInfo } = require('./');
+    try {
+      const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo());
+      await waitForNextUpdate();
 
-  //   try {
-  //     const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo());
-  //     await waitForNextUpdate();
+      expect(result.current.supported).toEqual(true);
+    } finally {
+      console.error = originalError;
+    }
+  });
 
-  //     expect(result.current.supported).toEqual(true);
-  //   } finally {
-  //     console.error = originalError;
-  //   }
-  // });
+  test('should return mediaCapabilitiesInfo for given media configuration', async () => {
+    const originalError = console.error;
+    console.error = jest.fn();
 
-  // test('should return mediaCapabilitiesInfo for given media configuration', async () => {
-  //   const originalError = console.error;
-  //   console.error = jest.fn();
+    const mockDecodingInfo = jest.fn().mockImplementation(() => Promise.resolve({
+      ...mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]
+    }));
 
-  //   const mockDecodingInfo = jest.fn().mockImplementation(() => Promise.resolve({
-  //     ...mediaCapabilitiesMapper[mediaDecodingConfig.audio.contentType]
-  //   }));
+    global.navigator.mediaCapabilities = {
+      decodingInfo: mockDecodingInfo
+    };
 
-  //   // global.navigator.mediaCapabilities = {
-  //   //   decodingInfo: mockDecodingInfo
-  //   // };
+    const { useMediaCapabilitiesDecodingInfo } = require('./');
 
-  //   Object.defineProperty(window.navigator, 'mediaCapabilities', {
-  //     value: {decodingInfo: mockDecodingInfo},
-  //     configurable: true,
-  //     writable: true
-  //   });
+    try {
+      const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
+      await waitForNextUpdate();
 
-  //   const { useMediaCapabilitiesDecodingInfo } = require('./');
-
-  //   try {
-  //     const { result, waitForNextUpdate } = renderHook(() => useMediaCapabilitiesDecodingInfo(mediaDecodingConfig));
-  //     await waitForNextUpdate();
-
-  //     expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
-  //     expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(true);
-  //     expect(result.current.mediaCapabilitiesInfo.supported).toEqual(true);
-  //   } finally {
-  //     console.error = originalError;
-  //   }
-  // });
+      expect(result.current.mediaCapabilitiesInfo.powerEfficient).toEqual(true);
+      expect(result.current.mediaCapabilitiesInfo.smooth).toEqual(true);
+      expect(result.current.mediaCapabilitiesInfo.supported).toEqual(true);
+    } finally {
+      console.error = originalError;
+    }
+  });
 });

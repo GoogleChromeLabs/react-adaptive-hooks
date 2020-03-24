@@ -16,9 +16,8 @@
 
 import { useState, useEffect } from 'react';
 
-const supported = typeof window !== 'undefined' && 'mediaCapabilities' in navigator;
-
 const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapabilitiesInfo = {}) => {
+  const supported = typeof navigator !== 'undefined' && 'mediaCapabilities' in navigator;
   const [mediaCapabilitiesInfo, setMediaCapabilitiesInfo] = useState(initialMediaCapabilitiesInfo);
 
   useEffect(() => {
