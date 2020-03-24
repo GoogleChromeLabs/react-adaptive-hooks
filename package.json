@@ -21,6 +21,7 @@
     "react": "^16.8.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.5.5",
     "@testing-library/react-hooks": "^1.1.0",
     "jest": "^24.8.0",

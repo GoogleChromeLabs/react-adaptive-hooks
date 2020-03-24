@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { useState, useEffect } from 'react';
 
 const supported = typeof window !== 'undefined' && 'mediaCapabilities' in navigator;
