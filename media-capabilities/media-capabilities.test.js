@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import 'babel-polyfill';
 import { renderHook } from '@testing-library/react-hooks';
 
 const mediaDecodingConfig = {
