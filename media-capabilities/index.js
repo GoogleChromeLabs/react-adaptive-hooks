@@ -18,10 +18,6 @@ import { useState, useEffect } from 'react';
 const supported = typeof window !== 'undefined' && 'mediaCapabilities' in navigator;
 
 const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapabilitiesInfo = {}) => {
-  initialMediaCapabilitiesInfo = {
-    ...initialMediaCapabilitiesInfo
-  };
-
   const [mediaCapabilitiesInfo, setMediaCapabilitiesInfo] = useState(initialMediaCapabilitiesInfo);
 
   useEffect(() => {
@@ -31,7 +27,7 @@ const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapab
       .decodingInfo(mediaDecodingConfig)
       .then(setMediaCapabilitiesInfo)
       .catch(error => console.error(error));
-  }, [supported, mediaDecodingConfig]);
+  }, [mediaDecodingConfig]);
 
   return { supported, mediaCapabilitiesInfo };
 };
