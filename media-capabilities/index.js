@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { useState, useEffect } from 'react';
 
-const supported = typeof window !== 'undefined' && 'mediaCapabilities' in navigator;
-
 const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapabilitiesInfo = {}) => {
-  initialMediaCapabilitiesInfo = {
-    ...initialMediaCapabilitiesInfo
-  };
-
+  const supported = typeof navigator !== 'undefined' && 'mediaCapabilities' in navigator;
   const [mediaCapabilitiesInfo, setMediaCapabilitiesInfo] = useState(initialMediaCapabilitiesInfo);
 
   useEffect(() => {
@@ -31,7 +27,7 @@ const useMediaCapabilitiesDecodingInfo = (mediaDecodingConfig, initialMediaCapab
       .decodingInfo(mediaDecodingConfig)
       .then(setMediaCapabilitiesInfo)
       .catch(error => console.error(error));
-  }, []);
+  }, [mediaDecodingConfig]);
 
   return { supported, mediaCapabilitiesInfo };
 };
