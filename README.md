@@ -18,7 +18,11 @@ Make it easier to target low-end devices while progressively adding high-end-onl
 
 ## Installation
 
-`npm i react-adaptive-hooks --save` or `yarn add react-adaptive-hooks`
+```sh
+npm i react-adaptive-hooks
+# or 
+yarn add react-adaptive-hooks
+```
 
 ## Usage
 
@@ -38,7 +42,7 @@ and then use them in your components. Examples for each hook and utility can be 
 
 `useNetworkStatus` React hook for adapting based on network status (effective connection type)
 
-```js
+```jsx
 import React from 'react';
 
 import { useNetworkStatus } from 'react-adaptive-hooks/network';
@@ -83,7 +87,7 @@ const { effectiveConnectionType } = useNetworkStatus(initialEffectiveConnectionT
 
 `useSaveData` utility for adapting based on the user's browser Data Saver preferences.
 
-```js
+```jsx
 import React from 'react';
 
 import { useSaveData } from 'react-adaptive-hooks/save-data';
@@ -112,7 +116,7 @@ const { saveData } = useSaveData(initialSaveData);
 
 `useHardwareConcurrency` utility for adapting to the number of logical CPU processor cores on the user's device.
 
-```js
+```jsx
 import React from 'react';
 
 import { useHardwareConcurrency } from 'react-adaptive-hooks/hardware-concurrency';
@@ -133,7 +137,7 @@ const MyComponent = () => {
 
 `useMemoryStatus` utility for adapting based on the user's device memory (RAM)
 
-```js
+```jsx
 import React from 'react';
 
 import { useMemoryStatus } from 'react-adaptive-hooks/memory';
@@ -164,7 +168,7 @@ const { deviceMemory } = useMemoryStatus(initialMemoryStatus);
 
 **Use case:** this hook can be used to check if we can play a certain content type. For example, Safari does not support WebM so we want to fallback to MP4 but if Safari at some point does support WebM it will automatically load WebM videos.
 
-```js
+```jsx
 import React from 'react';
 
 import { useMediaCapabilitiesDecodingInfo } from 'react-adaptive-hooks/media-capabilities';
@@ -203,7 +207,7 @@ This utility accepts a [MediaDecodingConfiguration](https://developer.mozilla.or
 
 Deliver a light, interactive core experience to users and progressively add high-end-only features on top, if a user's hardware can handle it. Below is an example using the Network Status hook:
 
-```js
+```jsx
 import React, { Suspense, lazy } from 'react';
 
 import { useNetworkStatus } from 'react-adaptive-hooks/network';
@@ -226,7 +230,7 @@ export default MyComponent;
 ```
 
 Light.js:
-```js
+```jsx
 import React from 'react';
 
 const Light = ({ imageUrl, ...rest }) => (
@@ -237,7 +241,7 @@ export default Light;
 ```
 
 Full.js:
-```js
+```jsx
 import React from 'react';
 import Magnifier from 'react-magnifier';
 
@@ -252,7 +256,7 @@ export default Full;
 
 We can extend `React.lazy()` by incorporating a check for a device or network signal. Below is an example of network-aware code-splitting. This allows us to conditionally load a light core experience or full-fat experience depending on the user's effective connection speed (via `navigator.connection.effectiveType`).
 
-```js
+```jsx
 import React, { Suspense } from 'react';
 
 const Component = React.lazy(() => {
@@ -294,7 +298,7 @@ The built version of this package uses ESM (native JS modules) by default, but i
 * Transpile the package by installing [next-transpile-modules](https://github.com/martpie/next-transpile-modules). ([example project](https://github.com/GoogleChromeLabs/adaptive-loading/tree/master/next-show-adaptive-loading)). This is because Next.js currently does not pass `node_modules` into webpack server-side.
 
 * Use a UMD build as in the following code-snippet: ([example project](https://glitch.com/edit/#!/anton-karlovskiy-next-show-adaptive-loading?path=utils/hooks.js:19:91))
-```
+```js
 import {
   useNetworkStatus,
   useSaveData,
