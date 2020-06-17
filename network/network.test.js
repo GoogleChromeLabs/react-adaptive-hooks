@@ -134,12 +134,12 @@ describe('useNetworkStatus', () => {
     testEctStatusEventListenerMethod(ectStatusListeners.removeEventListener);
   });
 
-  test('should pick up updates happened between render & passive effect', async () => {
+  test('should pick up updates happened between render & passive effect', () => {
     global.navigator.connection = {
       ...ectStatusListeners,
       effectiveType: '2g'
     };
-    
+
     function App() {
       const { effectiveConnectionType } = useNetworkStatus();
       return effectiveConnectionType;
