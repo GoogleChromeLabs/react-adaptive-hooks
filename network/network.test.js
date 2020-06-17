@@ -144,11 +144,9 @@ describe('useNetworkStatus', () => {
       return effectiveConnectionType;
     }
     const container = document.createElement('div');
-    TestUtils.act(() => {
-      render(createElement(App), container);
-    });
+    render(createElement(App), container);
 
-    console.log(container.innerHTML);
+    expect(container.innerHTML).toBe('2g');
     
     // update
     TestUtils.act(() => {
@@ -156,10 +154,7 @@ describe('useNetworkStatus', () => {
       ectStatusListeners.dispatchEvent(new Event('change'));
     });
 
-    console.log(container.innerHTML);
-    // await waitForNextUpdate();
-    // await act(async () => {});
-    // rerender();
-    // expect(result.current.effectiveConnectionType).toBe('4g');
+    expect(container.innerHTML).toBe('4g');
+    unmountComponentAtNode(container);
   })
 });
