@@ -43,6 +43,18 @@ const useNetworkStatus = initialEffectiveConnectionType => {
         });
       };
       navigatorConnection.addEventListener('change', updateECTStatus);
+      // We might have missed an update to effectiveType between render
+      // and useEffect since effects are not synchronously called after render.
+      // If there was no change, we bail out the update simply by returning the prev state.
+      setNetworkStatus(prevNetworkStatus => {
+        if (navigatorConnection.effectiveType !== prevNetworkStatus.effectiveType) {
+          return {
+            ...prevNetworkStatus,
+            effectiveConnectionType: navigatorConnection.effectiveType
+          };
+        }
+        return prevNetworkStatus;
+      });
       return () => {
         navigatorConnection.removeEventListener('change', updateECTStatus);
       };
