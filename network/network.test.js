@@ -15,7 +15,9 @@
  */
 
 import { renderHook, act } from '@testing-library/react-hooks';
-
+import { createElement } from 'react';
+import { render, unmountComponentAtNode } from 'react-dom';
+import * as TestUtils from 'react-dom/test-utils';
 import { useNetworkStatus } from './';
 
 describe('useNetworkStatus', () => {
@@ -25,7 +27,13 @@ describe('useNetworkStatus', () => {
     addEventListener: jest.fn().mockImplementation((event, callback) => {
       map[event] = callback;
     }),
-    removeEventListener: jest.fn()
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(event => {
+      const callback = map[event.type];
+      if (callback) {
+        callback(event);
+      }
+    })
   };
 
   afterEach(() => {
@@ -125,4 +133,33 @@ describe('useNetworkStatus', () => {
     unmount();
     testEctStatusEventListenerMethod(ectStatusListeners.removeEventListener);
   });
+
+  test('should pick up updates happened between render & passive effect', async () => {
+    global.navigator.connection = {
+      ...ectStatusListeners,
+      effectiveType: '2g'
+    };
+    function App() {
+      const { effectiveConnectionType } = useNetworkStatus();
+      return effectiveConnectionType;
+    }
+    const container = document.createElement('div');
+    TestUtils.act(() => {
+      render(createElement(App), container);
+    });
+
+    console.log(container.innerHTML);
+    
+    // update
+    TestUtils.act(() => {
+      global.navigator.connection.effectiveType = '4g';
+      ectStatusListeners.dispatchEvent(new Event('change'));
+    });
+
+    console.log(container.innerHTML);
+    // await waitForNextUpdate();
+    // await act(async () => {});
+    // rerender();
+    // expect(result.current.effectiveConnectionType).toBe('4g');
+  })
 });
