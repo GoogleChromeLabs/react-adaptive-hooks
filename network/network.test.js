@@ -139,22 +139,36 @@ describe('useNetworkStatus', () => {
       ...ectStatusListeners,
       effectiveType: '2g'
     };
+    
     function App() {
       const { effectiveConnectionType } = useNetworkStatus();
       return effectiveConnectionType;
     }
+    
+    // First we render the app without the TestUtils.act
+    // wrapper so that passive effects are not flushed.
     const container = document.createElement('div');
     render(createElement(App), container);
 
+    // The first render should be 2g
     expect(container.innerHTML).toBe('2g');
     
-    // update
-    TestUtils.act(() => {
-      global.navigator.connection.effectiveType = '4g';
-      ectStatusListeners.dispatchEvent(new Event('change'));
-    });
+    // At this point, we haven't flushed our effects.
+    // Now it's the perfect time to dispatch a change
+    // event to emulate the issue.
+    global.navigator.connection.effectiveType = '4g';
+    ectStatusListeners.dispatchEvent(new Event('change'));
 
+    // Still 2g, because we haven't subscribed yet
+    expect(container.innerHTML).toBe('2g');
+
+    // Now we subscribe (flush useEffect)
+    TestUtils.act(() => {});
+
+    // After the first effect, it should turn to 4g
     expect(container.innerHTML).toBe('4g');
+
+    // Cleanup
     unmountComponentAtNode(container);
   })
 });
