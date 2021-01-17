@@ -1,0 +1,37 @@
+{
+  "name": "vue-adaptive-hooks",
+  "version": "0.0.1",
+  "description": "vue adaptive hooks",
+  "keywords": [
+    "adaptive-hooks"
+  ],
+  "author": "Google Chrome",
+  "homepage": "https://github.com/GoogleChromeLabs/react-adaptive-hooks#readme",
+  "license": "Apache-2.0",
+  "extends": "../../babel.config.js",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "unpkg": "dist/index.umd.js",
+  "source": "lib/vue-adaptive-hooks.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoogleChromeLabs/react-adaptive-hooks.git"
+  },
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch",
+    "prepare": "npm run build"
+  },
+  "bugs": {
+    "url": "https://github.com/GoogleChromeLabs/react-adaptive-hooks/issues"
+  }
+}
