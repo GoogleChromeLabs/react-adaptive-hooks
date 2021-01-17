@@ -6,25 +6,17 @@
   "author": "Google Chrome",
   "license": "Apache-2.0",
   "private": false,
-  "main": "dist/index.js",
-  "module": "dist/index.module.js",
-  "unpkg": "dist/index.umd.js",
-  "source": "index.js",
   "scripts": {
-    "build": "microbundle",
-    "dev": "microbundle watch",
+    "build": "lerna run build",
     "prepare": "npm run build",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
-  },
-  "peerDependencies": {
-    "react": "^16.8.0"
+    "test": "lerna run test"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.5.5",
     "@testing-library/react-hooks": "^1.1.0",
     "babel-polyfill": "^6.26.0",
     "jest": "^24.8.0",
+    "lerna": "^3.22.1",
     "microbundle": "0.11.0",
     "react": "16.9.0",
     "react-test-renderer": "16.9.0"
