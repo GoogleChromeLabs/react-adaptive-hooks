@@ -16,13 +16,13 @@
 
 import { renderHook } from '@testing-library/react-hooks';
 
-afterEach(function() {
+afterEach(() => {
   // Reload hook for every test
   jest.resetModules();
 });
 
 const getMemoryStatus = currentResult => ({
-  unsupported: false,
+  supported: true,
   deviceMemory: currentResult.deviceMemory,
   totalJSHeapSize: currentResult.totalJSHeapSize,
   usedJSHeapSize: currentResult.usedJSHeapSize,
@@ -30,11 +30,11 @@ const getMemoryStatus = currentResult => ({
 });
 
 describe('useMemoryStatus', () => {
-  test(`should return "true" for unsupported case`, () => {
+  test(`should return "false" for unsupported case`, () => {
     const { useMemoryStatus } = require('./');
     const { result } = renderHook(() => useMemoryStatus());
 
-    expect(result.current.unsupported).toBe(true);
+    expect(result.current.supported).toBe(false);
   });
 
   test('should return initialMemoryStatus for unsupported case', () => {
@@ -48,7 +48,7 @@ describe('useMemoryStatus', () => {
       useMemoryStatus(mockInitialMemoryStatus)
     );
 
-    expect(result.current.unsupported).toBe(true);
+    expect(result.current.supported).toBe(false);
     expect(result.current.deviceMemory).toEqual(deviceMemory);
   });
 
@@ -73,7 +73,7 @@ describe('useMemoryStatus', () => {
 
     expect(getMemoryStatus(result.current)).toEqual({
       ...mockMemoryStatus,
-      unsupported: false
+      supported: true
     });
   });
 
@@ -89,7 +89,7 @@ describe('useMemoryStatus', () => {
     const { result } = renderHook(() => useMemoryStatus());
 
     expect(result.current.deviceMemory).toEqual(mockMemoryStatus.deviceMemory);
-    expect(result.current.unsupported).toEqual(false);
+    expect(result.current.supported).toEqual(true);
   });
 
   test('should not return initialMemoryStatus for supported case', () => {
@@ -118,7 +118,7 @@ describe('useMemoryStatus', () => {
 
     expect(getMemoryStatus(result.current)).toEqual({
       ...mockMemoryStatus,
-      unsupported: false
+      supported: true
     });
   });
 });

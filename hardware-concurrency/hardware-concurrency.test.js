@@ -16,7 +16,7 @@
 
 import { renderHook } from '@testing-library/react-hooks';
 
-afterEach(function() {
+afterEach(() => {
   // Reload hook for every test
   jest.resetModules();
 });
@@ -28,7 +28,7 @@ describe('useHardwareConcurrency', () => {
     if (!window.navigator) window.navigator = navigator;
   });
 
-  test(`should return "true" for unsupported case`, () => {
+  test(`should return "false" for unsupported case`, () => {
     Object.defineProperty(window, 'navigator', {
       value: undefined,
       configurable: true,
@@ -38,7 +38,7 @@ describe('useHardwareConcurrency', () => {
     const { useHardwareConcurrency } = require('./');
     const { result } = renderHook(() => useHardwareConcurrency());
 
-    expect(result.current.unsupported).toBe(true);
+    expect(result.current.supported).toBe(false);
   });
 
   test(`should return window.navigator.hardwareConcurrency`, () => {
@@ -48,7 +48,7 @@ describe('useHardwareConcurrency', () => {
     expect(result.current.numberOfLogicalProcessors).toBe(
       window.navigator.hardwareConcurrency
     );
-    expect(result.current.unsupported).toBe(false);
+    expect(result.current.supported).toBe(true);
   });
 
   test('should return 4 for device of hardwareConcurrency = 4', () => {
@@ -61,7 +61,7 @@ describe('useHardwareConcurrency', () => {
     const { result } = renderHook(() => useHardwareConcurrency());
 
     expect(result.current.numberOfLogicalProcessors).toEqual(4);
-    expect(result.current.unsupported).toBe(false);
+    expect(result.current.supported).toBe(true);
   });
 
   test('should return 2 for device of hardwareConcurrency = 2', () => {
@@ -74,6 +74,6 @@ describe('useHardwareConcurrency', () => {
     const { result } = renderHook(() => useHardwareConcurrency());
 
     expect(result.current.numberOfLogicalProcessors).toEqual(2);
-    expect(result.current.unsupported).toBe(false);
+    expect(result.current.supported).toBe(true);
   });
 });
