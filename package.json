@@ -25,7 +25,7 @@
     "@testing-library/react-hooks": "^1.1.0",
     "babel-polyfill": "^6.26.0",
     "jest": "^24.8.0",
-    "microbundle": "0.11.0",
+    "microbundle": "0.15.1",
     "react": "17.0.1",
     "react-test-renderer": "17.0.1"
   },
